@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-inter: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-inter);
+}
+
+.privacy-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: beige;
+    z-index: 2;
+  }
