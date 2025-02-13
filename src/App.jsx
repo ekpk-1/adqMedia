@@ -25,7 +25,7 @@ export default function App() {
       </AnimatePresence>
 
 
-        <BrowserRouter>
+        <BrowserRouter basename="/adqMedia">
         {/* Putting all the page components into a animated routes so we can use useLocation */}
           <AnimatedRoutes />
         </BrowserRouter>
