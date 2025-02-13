@@ -3,12 +3,12 @@ import { motion } from 'motion/react'
 
 const navbar = () => {
   return (
-    <header className= 'w-full py-5 sm:px-16 px-5 flex justify-between items-center'>
+    <header className= 'w-full py-6 sm:px-16 px-5 flex justify-between items-center bg-black/50 z-20 fixed top-0 left-0 right-0'>
         <nav className='Container flex w-full screen-max-width items-center'>
             <div className=''>
-                <a href='' className='text-white font-medium text-2xl relative hover:text-red-400 transition-all duration-300'>
+                <a href='' className='text-white font-medium text-4xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
                     ADQ 
-                    <span className='absolute -top-1 -right-2 w-2 h-2 bg-red-400 rounded-full'></span>
+                    <span className='absolute -top-2 -right-3 w-2 h-2 bg-red-400 rounded-full'></span>
                 </a>
             </div>
 
@@ -17,10 +17,10 @@ const navbar = () => {
                         <Link to="/">Home</Link>
                     </div>
                     <div className="px-5 text-medium cursor-pointer text-white hover:text-red-400 transition-all duration-300 uppercase">
-                        <Link to="services">Services</Link>
+                        <Link to="showcase">Showcase</Link>
                     </div>
                     <div className="px-5 text-medium cursor-pointer text-white hover:text-red-400 transition-all duration-300 uppercase">
-                        <Link to="showcase">Showcase</Link>
+                        <Link to="services">Services</Link>
                     </div>
             </div>
 

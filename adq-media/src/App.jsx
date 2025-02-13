@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 import AnimatedRoutes from "./components/AnimatedRoutes";
 
 export default function App() {
-  // State for the preloader
-  const [isLoading, setIsLoading] = useState(true);
+  // // State for the preloader
+  // const [isLoading, setIsLoading] = useState(true);
 
-  // Setting timeout for the preloader
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      window.scrollTo(0,0)
-    }, [1100]);
-  });
+  // // Setting timeout for the preloader
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     window.scrollTo(0,0)
+  //   }, [1100]);
+  // });
 
 
 
