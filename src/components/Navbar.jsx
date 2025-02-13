@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { motion } from 'motion/react'
 
-const navbar = () => {
+const Navbar = () => {
   return (
     <header className= 'w-full py-6 sm:px-16 px-5 flex justify-between items-center bg-black/50 z-20 fixed top-0 left-0 right-0'>
         <nav className='Container flex w-full screen-max-width items-center'>
@@ -36,4 +36,4 @@ const navbar = () => {
   )
 }
 
-export default navbar
+export default Navbar;

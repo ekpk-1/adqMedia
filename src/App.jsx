@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
-
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import AnimatedRoutes from "./components/AnimatedRoutes";
 
 export default function App() {
