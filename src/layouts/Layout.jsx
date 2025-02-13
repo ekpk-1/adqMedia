@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar";
 import { motion, useIsPresent } from "framer-motion";
 import CamCorners from "../components/CamCorners";
 
