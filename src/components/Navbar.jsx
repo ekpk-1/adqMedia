@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 
 const Navbar = () => {
   return (
-    <header className= 'w-full py-6 sm:px-16 px-5 flex justify-between items-center bg-black/50 z-20 fixed top-0 left-0 right-0'>
+    <header className= 'w-full py-6 sm:px-16 px-5 flex justify-between items-center bg-black/50 z-20 fixed top-0 left-0 right-0 max-sm:bg-black/0'>
         <nav className='Container flex w-full screen-max-width items-center'>
             <div className=''>
                 <a href='' className='text-white font-medium text-4xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
@@ -27,7 +27,7 @@ const Navbar = () => {
             <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className='flex items-center gap-2 rounded-full bg-white px-4 py-2 hover:bg-red-400 transition-color duration-300 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)'
+                className='flex items-center gap-2 rounded-full bg-white px-4 py-2 hover:bg-red-400 transition-color duration-300 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) max-sm:hidden'
             >
                 <span className='text-black font-medium'>Get in touch</span>
             </motion.button>

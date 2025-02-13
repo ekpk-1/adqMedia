@@ -20,9 +20,9 @@ export default function Layout() {
         style={{ originX: isPresent ? 0 : 1 }}
         className="fixed top-0 left-0 h-screen w-screen bg-white flex justify-center items-center text-black z-50"
       >
-        <a className='text-black font-bold text-5xl relative hover:text-red-400 transition-all duration-300'>
+        <a className='text-black font-bold text-5xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
             ADQ 
-            <span className='absolute -top-2 -right-3 w-4 h-4 bg-red-400 rounded-full'></span>
+            <span className='absolute -top-3 -right-4 w-2.5 h-2.5 bg-red-400 rounded-full'></span>
         </a>
         <CamCorners />
       </motion.div>
