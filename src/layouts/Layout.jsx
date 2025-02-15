@@ -11,13 +11,13 @@ export default function Layout() {
       <CamCorners />
       <Navbar />
       <Outlet />
-      {/* Putting the motion div here will add the page transitions for all routes */}
+      {/* Camera shutter transition effect */}
       <motion.div
-        initial={{ scaleX: 1 }}
-        animate={{ scaleX: 0 }}
-        exit={{ scaleX: 1 }}
+        initial={{ scaleY: 1 }}
+        animate={{ scaleY: 0 }}
+        exit={{ scaleY: 1 }}
         transition={{ duration: 1, ease: [0.83, 0, 0.17, 1] }}
-        style={{ originX: isPresent ? 0 : 1 }}
+        style={{ originY: isPresent ? 1 : 0 }}
         className="fixed top-0 left-0 h-screen w-screen bg-white flex justify-center items-center text-black z-50"
       >
         <a className='text-black font-bold text-5xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
