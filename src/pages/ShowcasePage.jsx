@@ -23,24 +23,25 @@ const ShowcasePage = () => {
       <section className="min-h-screen bg-black py-24">
         <div className="container mx-auto">
           <div className="grid grid-cols-4 lg:grid-cols-12 gap-4 md:gap-8">
-            {/* Featured Image - Full Width */}
-            <div className="col-span-4 lg:col-span-12 aspect-[16/9] overflow-hidden">
-              <img 
-                src="https://dummyimage.com/600x400/d6d6d6/000000.jpg&text=placeholder" 
-                alt="Gallery 1"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
-              />
-            </div>
-            
             {/* Two Column Layout */}
-            <div className="col-span-4 lg:col-span-8 aspect-[4/3] overflow-hidden">
+            <div className="col-span-3 lg:col-span-3 aspect-[3/4] overflow-hidden">
+              <p className='text-white text-heading-1 font-black'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+            </div>
+            <div className="col-span-3 lg:col-span-3 aspect-[2/3] overflow-hidden">
               <img 
                 src="https://dummyimage.com/600x400/d6d6d6/000000.jpg&text=placeholder" 
                 alt="Gallery 2"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
               />
             </div>
-            <div className="col-span-4 lg:col-span-4 aspect-[3/4] overflow-hidden">
+            <div className="col-span-3 lg:col-span-3 aspect-[3/4] overflow-hidden">
+              <img 
+                src="https://dummyimage.com/600x400/d6d6d6/000000.jpg&text=placeholder" 
+                alt="Gallery 3"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
+              />
+            </div>
+            <div className="col-span-3 lg:col-span-3 aspect-[2/3] overflow-hidden">
               <img 
                 src="https://dummyimage.com/600x400/d6d6d6/000000.jpg&text=placeholder" 
                 alt="Gallery 3"

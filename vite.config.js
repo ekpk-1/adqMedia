@@ -8,7 +8,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/adqMedia/',
   build: {
     rollupOptions: {
       input: {

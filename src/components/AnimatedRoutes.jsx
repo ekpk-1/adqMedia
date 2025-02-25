@@ -1,9 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Layout from "../layouts/Layout";
-import HomePage from "../pages/HomePage";   
 import ServicesPage from "../pages/ServicesPage";
 import ShowcasePage from "../pages/ShowcasePage";
-
 import { AnimatePresence } from "framer-motion";
 
 function AnimatedRoutes() {
@@ -14,7 +12,7 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
+            <Route index element={<ShowcasePage />} />
             <Route path="services" element={<ServicesPage />} />
             <Route path="showcase" element={<ShowcasePage />} />
           </Route>

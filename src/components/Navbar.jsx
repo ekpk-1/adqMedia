@@ -53,10 +53,7 @@ const Navbar = () => {
 
             <div className='flex flex-1 justify-center max-sm:hidden'>
                     <div className="px-5 text-medium cursor-pointer text-white hover:text-red-400 transition-all duration-300 uppercase">
-                        <Link to="/">Home</Link>
-                    </div>
-                    <div className="px-5 text-medium cursor-pointer text-white hover:text-red-400 transition-all duration-300 uppercase">
-                        <Link to="showcase">Showcase</Link>
+                        <Link to="/">Showcase</Link>
                     </div>
                     <div className="px-5 text-medium cursor-pointer text-white hover:text-red-400 transition-all duration-300 uppercase">
                         <Link to="services">Services</Link>
@@ -64,7 +61,7 @@ const Navbar = () => {
             </div>
 
             <motion.button
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9 }}
                 className='flex items-center gap-2 rounded-full bg-white px-4 py-2 hover:bg-red-400 transition-color duration-300 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) max-sm:hidden'
             >
@@ -107,7 +104,7 @@ const Navbar = () => {
             </motion.button> */}
 
             <nav className="flex flex-col items-center gap-8">
-              {['Home', 'Showcase', 'Services'].map((item, i) => (
+              {['Showcase', 'Services'].map((item, i) => (
                 <motion.div
                   custom={i}
                   variants={linkVariants}
