@@ -31,17 +31,17 @@ export const galleryImages = [
     span: 'col-span-4 lg:col-span-3 row-start-2 aspect-square'  
   },
   //YellowEvo row
-  // {
-  //   id: 6,
-  //   src: '/gallery/evo.jpg',
-  //   alt: 'Gallery Image 6',
-  //   span: 'col-span-4 lg:col-span-4 aspect-square row-start-3'  
-  // },
-  // {
-  //   id: 7,
-  //   src: '/gallery/evoB.jpg',
-  //   alt: 'Gallery Image 7',
-  //   span: 'col-span-4 lg:col-span-4 aspect-square row-start-4'  
-  // },
+  {
+    id: 6,
+    src: '/gallery/evo.jpg',
+    alt: 'Gallery Image 6',
+    span: 'col-span-4 lg:col-span-4 aspect-square row-start-3'  
+  },
+  {
+    id: 7,
+    src: '/gallery/evoB.jpg',
+    alt: 'Gallery Image 7',
+    span: 'col-span-4 lg:col-span-4 aspect-square row-start-4'  
+  },
   
 ]; 
