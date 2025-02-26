@@ -15,5 +15,8 @@ export default defineConfig({
         '404': 'public/404.html'
       }
     }
+  },
+  optimizeDeps: {
+    include: ['react-swipeable']
   }
 })

@@ -9,6 +9,13 @@ const GalleryImage = ({ src: initialSrc, alt: initialAlt, span, id: initialId })
   const [currentAlt, setCurrentAlt] = useState(initialAlt);
   const [currentId, setCurrentId] = useState(initialId);
 
+  const handleOpen = () => {
+    setCurrentSrc(initialSrc);
+    setCurrentAlt(initialAlt);
+    setCurrentId(initialId);
+    setIsModalOpen(true);
+  };
+
   const handleNext = () => {
     const currentIndex = galleryImages.findIndex(img => img.id === currentId);
     const nextIndex = (currentIndex + 1) % galleryImages.length;
@@ -31,7 +38,7 @@ const GalleryImage = ({ src: initialSrc, alt: initialAlt, span, id: initialId })
     <>
       <div 
         className={`${span} overflow-hidden cursor-zoom-in`}
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleOpen}
       >
         <img 
           src={initialSrc} 

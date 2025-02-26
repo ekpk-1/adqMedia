@@ -1,15 +1,31 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
+import { useSwipeable } from 'react-swipeable';
 
-const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => {
+const ImageModal = memo(({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') onClose();
+    if (e.key === 'ArrowRight') onNext();
+    if (e.key === 'ArrowLeft') onPrev();
+  }, [onClose, onNext, onPrev]);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: onNext,
+    onSwipedRight: onPrev,
+    onSwiping: () => setIsDragging(true),
+    onSwiped: () => setIsDragging(false),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+    trackTouch: true,
+    delta: 50,
+    swipeDuration: 300,
+    rotationAngle: 0
+  });
+
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') onNext();
-      if (e.key === 'ArrowLeft') onPrev();
-    };
-
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
@@ -19,28 +35,50 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => 
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose, onNext, onPrev]);
+  }, [isOpen, handleKeyDown]);
 
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
-      >
+    <AnimatePresence mode="wait">
+      <div className="fixed inset-0 z-20 max-sm:z-[60]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute inset-0 bg-black/90"
+        />
+
+        {/* Exit Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-[70] bg-black/50 p-3 hover:bg-white/10 rounded-full transition-colors duration-300 cursor-pointer"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="white"
+            className="w-6 h-6"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
 
         {/* Navigation Arrows */}
-        <div className="absolute inset-0 flex items-center justify-between px-4 z-[60]">
+        <div className="absolute inset-0 flex items-center justify-between px-4 z-[60] max-sm:hidden">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onPrev();
-            }}
+            onClick={onPrev}
             className="bg-black/50 p-4 hover:bg-white/10 rounded-full transition-colors duration-300 cursor-pointer"
+            aria-label="Previous image"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,6 +87,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => 
               strokeWidth={2}
               stroke="white"
               className="w-8 h-8"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -59,11 +98,9 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => 
           </button>
 
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onNext();
-            }}
+            onClick={onNext}
             className="bg-black/50 p-4 hover:bg-white/10 rounded-full transition-colors duration-300 cursor-pointer"
+            aria-label="Next image"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,6 +109,7 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => 
               strokeWidth={2}
               stroke="white"
               className="w-8 h-8"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -84,19 +122,24 @@ const ImageModal = ({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => 
 
         {/* Image Container */}
         <div
-          className="relative w-full h-full flex items-center justify-center p-8"
-          onClick={(e) => e.stopPropagation()}
+          {...handlers}
+          className="absolute inset-0 flex items-center justify-center p-8 cursor-pointer"
         >
           <img
             src={imageSrc}
             alt={imageAlt}
-            className="max-w-full max-h-full w-auto h-auto object-contain"
+            className={`max-w-full max-h-full w-auto h-auto object-contain select-none z-[60] ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
+            draggable="false"
           />
         </div>
-      </motion.div>
+      </div>
     </AnimatePresence>
   );
-};
+});
+
+ImageModal.displayName = 'ImageModal';
 
 ImageModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
