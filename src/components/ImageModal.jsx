@@ -3,7 +3,16 @@ import { useEffect, useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSwipeable } from 'react-swipeable';
 
-const ImageModal = memo(({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }) => {
+const ImageModal = memo(({ 
+  isOpen, 
+  onClose, 
+  imageSrc, 
+  imageAlt, 
+  onNext, 
+  onPrev, 
+  currentIndex,
+  totalImages 
+}) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleKeyDown = useCallback((e) => {
@@ -134,6 +143,19 @@ const ImageModal = memo(({ isOpen, onClose, imageSrc, imageAlt, onNext, onPrev }
             draggable="false"
           />
         </div>
+
+        {/* Dots Navigation */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-[70]">
+          {[...Array(totalImages)].map((_, index) => (
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                currentIndex === index ? 'bg-white' : 'bg-white/50'
+              }`}
+              aria-label={`Image ${index + 1} of ${totalImages}`}
+            />
+          ))}
+        </div>
       </div>
     </AnimatePresence>
   );
@@ -147,7 +169,9 @@ ImageModal.propTypes = {
   imageSrc: PropTypes.string.isRequired,
   imageAlt: PropTypes.string.isRequired,
   onNext: PropTypes.func.isRequired,
-  onPrev: PropTypes.func.isRequired
+  onPrev: PropTypes.func.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  totalImages: PropTypes.number.isRequired
 };
 
 export default ImageModal; 

@@ -24,11 +24,12 @@ const ShowcasePage = () => {
       </div>
       <section className="min-h-screen bg-black py-24">
         <div className="container mx-auto px-8">
-          <div className="grid grid-cols-12 gap-8 grid-flow-dense">
+          <div className="grid grid-cols-12 gap-8 max-sm:gap-4">
             {galleryImages.map((image) => (
               <GalleryImage 
                 key={image.id}
                 {...image}
+                images={galleryImages}
               />
             ))}
           </div>

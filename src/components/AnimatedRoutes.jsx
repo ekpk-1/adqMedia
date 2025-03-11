@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import ServicesPage from "../pages/ServicesPage";
 import ShowcasePage from "../pages/ShowcasePage";
+import CommercialPage from "../pages/CommercialPage";
 import { AnimatePresence } from "framer-motion";
 
 function AnimatedRoutes() {
@@ -15,6 +16,7 @@ function AnimatedRoutes() {
             <Route index element={<ShowcasePage />} />
             <Route path="services" element={<ServicesPage />} />
             <Route path="showcase" element={<ShowcasePage />} />
+            <Route path="commercial" element={<CommercialPage />} />
           </Route>
         </Routes>
     </AnimatePresence>

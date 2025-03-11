@@ -1,59 +1,42 @@
-import { useState } from 'react';
+import { useImageGallery } from '../hooks/useImageGallery';
 import ImageModal from './ImageModal';
-import { galleryImages } from '../constants/galleryImages';
 import PropTypes from 'prop-types';
 
-const GalleryImage = ({ src: initialSrc, alt: initialAlt, span, id: initialId }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState(initialSrc);
-  const [currentAlt, setCurrentAlt] = useState(initialAlt);
-  const [currentId, setCurrentId] = useState(initialId);
-
-  const handleOpen = () => {
-    setCurrentSrc(initialSrc);
-    setCurrentAlt(initialAlt);
-    setCurrentId(initialId);
-    setIsModalOpen(true);
-  };
-
-  const handleNext = () => {
-    const currentIndex = galleryImages.findIndex(img => img.id === currentId);
-    const nextIndex = (currentIndex + 1) % galleryImages.length;
-    const nextImage = galleryImages[nextIndex];
-    setCurrentSrc(nextImage.src);
-    setCurrentAlt(nextImage.alt);
-    setCurrentId(nextImage.id);
-  };
-
-  const handlePrev = () => {
-    const currentIndex = galleryImages.findIndex(img => img.id === currentId);
-    const prevIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
-    const prevImage = galleryImages[prevIndex];
-    setCurrentSrc(prevImage.src);
-    setCurrentAlt(prevImage.alt);
-    setCurrentId(prevImage.id);
-  };
+const GalleryImage = ({ src, alt, span, id, images }) => {
+  const imageIndex = images.findIndex(img => img.id === id);
+  const {
+    currentImage,
+    currentIndex,
+    isModalOpen,
+    handleOpen,
+    handleClose,
+    handleNext,
+    handlePrev,
+    totalImages
+  } = useImageGallery(images, imageIndex);
 
   return (
     <>
       <div 
         className={`${span} overflow-hidden cursor-zoom-in`}
-        onClick={handleOpen}
+        onClick={() => handleOpen(imageIndex)}
       >
         <img 
-          src={initialSrc} 
-          alt={initialAlt}
+          src={src} 
+          alt={alt}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
         />
       </div>
 
       <ImageModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        imageSrc={currentSrc}
-        imageAlt={currentAlt}
+        onClose={handleClose}
+        imageSrc={currentImage.src}
+        imageAlt={currentImage.alt}
         onNext={handleNext}
         onPrev={handlePrev}
+        currentIndex={currentIndex}
+        totalImages={totalImages}
       />
     </>
   );
@@ -63,7 +46,15 @@ GalleryImage.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   span: PropTypes.string,
-  id: PropTypes.string.isRequired
+  id: PropTypes.number.isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      src: PropTypes.string.isRequired,
+      alt: PropTypes.string.isRequired,
+      span: PropTypes.string.isRequired,
+    })
+  ).isRequired
 };
 
-export default GalleryImage 
+export default GalleryImage; 
