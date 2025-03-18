@@ -180,7 +180,31 @@ export const galleryImages = [
     alt: 'Gallery Image 29',
     span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
   },
-
+  //rari
+  {
+    id: 30,
+    src: '/gallery/rari.jpg',
+    alt: 'Gallery Image 30',
+    span: 'col-span-4 lg:col-span-12 aspect-[16/9] max-sm:col-span-12 max-sm:aspect-[4/3]'  
+  },
+  {
+    id: 31,
+    src: '/gallery/rari2.jpg',
+    alt: 'Gallery Image 31',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
+  }, 
+  {
+    id: 32,
+    src: '/gallery/rari3.jpg',
+    alt: 'Gallery Image 32',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
+  }, 
+  {
+    id: 33,
+    src: '/gallery/rari4.jpg',
+    alt: 'Gallery Image 33',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
+  } 
   
 
 
