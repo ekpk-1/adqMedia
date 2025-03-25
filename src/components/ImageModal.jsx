@@ -145,7 +145,7 @@ const ImageModal = memo(({
         </div>
 
         {/* Dots Navigation */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-[70]">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-[70] max-sm:hidden">
           {[...Array(totalImages)].map((_, index) => (
             <div
               key={index}
