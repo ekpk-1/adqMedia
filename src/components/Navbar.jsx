@@ -45,10 +45,10 @@ const Navbar = () => {
       <header className= 'w-full py-6 sm:px-16 px-5 flex justify-between items-center bg-black/50 z-20 fixed top-0 left-0 right-0 max-sm:bg-black/0 max-sm:z-40'>
         <nav className='Container flex w-full screen-max-width items-center justify-between'>
             <div className='max-sm:mt-2 max-sm:ml-1 pr-[82px]'>
-                <a href='' className='text-white font-medium text-4xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
+                <Link to="/" className='text-white font-medium text-4xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue'>
                     ADQ 
                     <span className='absolute -top-2 -right-3 w-2 h-2 bg-red-400 rounded-full'></span>
-                </a>
+                </Link>
             </div>
 
             <div className='flex flex-1 justify-center max-sm:hidden'>
@@ -67,8 +67,8 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9 }}
                 className='flex items-center gap-2 rounded-full bg-white px-4 py-2 hover:bg-red-400 transition-color duration-300 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) max-sm:hidden'
-            >
-                <span className='text-black font-medium cursor-pointer'>Get in touch</span>
+          >
+                <Link to="services#contact-form" className='text-black font-medium cursor-pointer'>Get in touch</Link>
               </motion.button>
               
               <motion.button

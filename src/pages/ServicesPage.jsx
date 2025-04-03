@@ -1,9 +1,11 @@
+import ContactForm from "../components/ContactForm";
+
 const ServicesPage = () => {
   return (
     <>
       <section className="min-h-screen bg-black py-24">
-        <div className="container mx-auto px-8 text-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="container mx-auto px-8 mt-12 text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* About Section */}
             <div>
               <h2 className="text-4xl font-black mb-8">About Me</h2>
@@ -45,6 +47,7 @@ const ServicesPage = () => {
                 </p>
               </div>
             </div>
+            <ContactForm />
           </div>
         </div>
       </section>
