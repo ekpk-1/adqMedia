@@ -26,11 +26,11 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-[75%] mx-auto py-6 px-16 bg-zinc-900 rounded-lg shadow-lg col-span-1 xl:col-span-2 lg:col-span-2" id="contact-form">
-      <h2 className="text-2xl font-bold text-white mx-auto text-center mb-10">Get In Touch</h2>
+    <div className="w-[75%] mx-auto py-6 px-16 bg-zinc-900 rounded-lg shadow-lg col-span-1 xl:col-span-2 lg:col-span-2 max-sm:w-full max-sm:px-4 max-sm:py-4" id="contact-form" >
+      <h2 className="text-2xl font-bold text-white mx-auto text-center mb-10 max-sm:my-6">Get In Touch</h2>
       
-      <form ref={form} onSubmit={handleSubmit} className="space-y-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div>
+      <form ref={form} onSubmit={handleSubmit} className="space-y-4 grid grid-cols-2 lg:grid-cols-2 gap-4">
+        <div className='max-sm:col-span-1'>
           <label htmlFor="user_name" className="block text-sm font-medium text-white">
             Name
           </label>
@@ -43,7 +43,7 @@ const ContactForm = () => {
           />
         </div>
 
-        <div>
+        <div className='max-sm:col-span-1'>
           <label htmlFor="user_email" className="block text-sm font-medium text-white">
             Email
           </label>

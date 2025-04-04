@@ -4,7 +4,7 @@ const ServicesPage = () => {
   return (
     <>
       <section className="min-h-screen bg-black py-24">
-        <div className="container mx-auto px-8 mt-12 text-white">
+        <div className="container mx-auto px-8 mt-12 text-white max-sm:mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* About Section */}
             <div>
