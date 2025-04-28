@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import video from '../assets/0006bgvid.mp4'
 import { galleryImages } from '../constants/galleryImages';
 import GalleryImage from '../components/GalleryImage';
@@ -5,22 +6,28 @@ import GalleryImage from '../components/GalleryImage';
 const ShowcasePage = () => {
   return (
     <>
-    <div className="h-screen text-white flex justify-center items-center text-heading-1 font-black">
-      <video 
-        src={video} 
-        autoPlay 
-        muted 
-        loop 
-        playsInline
-        disablePictureInPicture
-        className="absolute inset-0 object-cover w-full h-full z-0 pointer-events-none" 
-        style={{ 
-          WebkitUserSelect: 'none',
-          msUserSelect: 'none',
-          userSelect: 'none',
-        }}
-      />
-      <div className="absolute inset-0 bg-black/50 z-[1]"></div>
+      <Helmet>
+        <title>Showcase | ADQ Media</title>
+        <meta name="description" content="View our portfolio of professional video production and media work at ADQ Media. Explore our creative projects and commercial productions." />
+        <meta property="og:title" content="Showcase | ADQ Media" />
+        <meta property="og:description" content="View our portfolio of professional video production and media work at ADQ Media. Explore our creative projects and commercial productions." />
+      </Helmet>
+      <div className="h-screen text-white flex justify-center items-center text-heading-1 font-black">
+        <video 
+          src={video} 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          disablePictureInPicture
+          className="absolute inset-0 object-cover w-full h-full z-0 pointer-events-none" 
+          style={{ 
+            WebkitUserSelect: 'none',
+            msUserSelect: 'none',
+            userSelect: 'none',
+          }}
+        />
+        <div className="absolute inset-0 bg-black/50 z-[1]"></div>
       </div>
       <section className="min-h-screen bg-black py-24">
         <div className="container mx-auto px-8">

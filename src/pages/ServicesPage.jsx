@@ -1,8 +1,15 @@
+import { Helmet } from 'react-helmet-async';
 import ContactForm from "../components/ContactForm";
 
 const ServicesPage = () => {
   return (
     <>
+      <Helmet>
+        <title>Services | ADQ Media</title>
+        <meta name="description" content="Explore our comprehensive range of video production and media services at ADQ Media. From commercial shoots to creative content, we deliver excellence." />
+        <meta property="og:title" content="Services | ADQ Media" />
+        <meta property="og:description" content="Explore our comprehensive range of video production and media services at ADQ Media. From commercial shoots to creative content, we deliver excellence." />
+      </Helmet>
       <section className="min-h-screen bg-black py-24">
         <div className="container mx-auto px-8 mt-12 text-white max-sm:mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
