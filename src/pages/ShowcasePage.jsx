@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import video from '../assets/0006bgvid.mp4'
 import { galleryImages } from '../constants/galleryImages';
 import GalleryImage from '../components/GalleryImage';
@@ -6,12 +5,6 @@ import GalleryImage from '../components/GalleryImage';
 const ShowcasePage = () => {
   return (
     <>
-      <Helmet>
-        <title>Showcase | ADQ Media</title>
-        <meta name="description" content="View our portfolio of professional video production and media work at ADQ Media. Explore our creative projects and commercial productions." />
-        <meta property="og:title" content="Showcase | ADQ Media" />
-        <meta property="og:description" content="View our portfolio of professional video production and media work at ADQ Media. Explore our creative projects and commercial productions." />
-      </Helmet>
       <div className="h-screen text-white flex justify-center items-center text-heading-1 font-black">
         <video 
           src={video} 
