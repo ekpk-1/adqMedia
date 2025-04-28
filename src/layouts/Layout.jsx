@@ -11,7 +11,6 @@ export default function Layout() {
       <CamCorners />
       <Navbar />
       <Outlet />
-      {/* Camera shutter transition effect */}
       <motion.div
         initial={{ scaleY: 1 }}
         animate={{ scaleY: 0 }}

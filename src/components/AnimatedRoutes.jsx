@@ -6,7 +6,6 @@ import CommercialPage from "../pages/CommercialPage";
 import { AnimatePresence } from "framer-motion";
 
 function AnimatedRoutes() {
-    // Need useLocation for framer motion to know which page is current
     const location = useLocation()
 
   return (
