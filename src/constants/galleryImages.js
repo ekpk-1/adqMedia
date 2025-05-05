@@ -1,4 +1,41 @@
 export const galleryImages = [
+  //rushsM3
+  {
+    id: 0,
+    src: '/gallery/rushsM3-1.jpg',
+    alt: 'Gallery Image 0',
+    span: 'col-span-12 lg:col-span-12 aspect-[16/9] max-sm:col-span-12 max-sm:aspect-[4/3]'  
+  },
+  {
+    id: 1,
+    src: '/gallery/rushsM3-5.jpg',
+    alt: 'Gallery Image 1',
+    span: 'col-span-6 lg:col-span-6 aspect-[4/3] max-sm:col-span-6 max-sm:aspect-[4/3]'  
+  },
+  {
+    id: 2,
+    src: '/gallery/rushsM3-3.jpg',
+    alt: 'Gallery Image 2',
+    span: 'col-span-6 lg:col-span-6 aspect-[4/3] max-sm:col-span-6 max-sm:aspect-[4/3]'  
+  },
+  {
+    id: 3,
+    src: '/gallery/rushsM3-4.jpg',
+    alt: 'Gallery Image 3',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
+  },
+  {
+    id: 4,
+    src: '/gallery/rushsM3-6.jpg',
+    alt: 'Gallery Image 4',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-6'  
+  },
+  {
+    id: 5,
+    src: '/gallery/rushsM3-2.jpg',
+    alt: 'Gallery Image 5',
+    span: 'col-span-4 lg:col-span-4 aspect-[4/3] max-sm:col-span-12'  
+  },
   //tookieEVO
   {
     id: 0,
@@ -85,7 +122,7 @@ export const galleryImages = [
     id: 13,
     src: '/gallery/evo5.jpg',
     alt: 'Gallery Image 13',
-    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-8'  
+    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-13'  
   },
   //EK
   {
