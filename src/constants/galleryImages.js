@@ -122,7 +122,7 @@ export const galleryImages = [
     id: 13,
     src: '/gallery/evo5.jpg',
     alt: 'Gallery Image 13',
-    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-13'  
+    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-12'  
   },
   //EK
   {
