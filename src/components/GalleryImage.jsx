@@ -31,12 +31,11 @@ const GalleryImage = ({ src, alt, span, id, images }) => {
       <ImageModal
         isOpen={isModalOpen}
         onClose={handleClose}
-        imageSrc={currentImage.src}
-        imageAlt={currentImage.alt}
+        item={currentImage}
         onNext={handleNext}
         onPrev={handlePrev}
         currentIndex={currentIndex}
-        totalImages={totalImages}
+        totalItems={totalImages}
       />
     </>
   );

@@ -1,19 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState, useCallback, memo } from 'react';
+import { useEffect, useState, useCallback, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSwipeable } from 'react-swipeable';
 
 const ImageModal = memo(({ 
   isOpen, 
   onClose, 
-  imageSrc, 
-  imageAlt, 
+  item, 
   onNext, 
   onPrev, 
   currentIndex,
-  totalImages 
+  totalItems 
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const videoRef = useRef(null);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') onClose();
@@ -46,7 +46,16 @@ const ImageModal = memo(({
     };
   }, [isOpen, handleKeyDown]);
 
+  // Set video volume when opened
+  useEffect(() => {
+    if (isOpen && videoRef.current) {
+      videoRef.current.volume = 0.15;
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const isVideo = item.src.endsWith('.mp4') || item.src.endsWith('.webm');
 
   return (
     <AnimatePresence mode="wait">
@@ -87,7 +96,7 @@ const ImageModal = memo(({
           <button
             onClick={onPrev}
             className="bg-black/50 p-4 hover:bg-white/10 rounded-full transition-colors duration-300 cursor-pointer"
-            aria-label="Previous image"
+            aria-label="Previous item"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +118,7 @@ const ImageModal = memo(({
           <button
             onClick={onNext}
             className="bg-black/50 p-4 hover:bg-white/10 rounded-full transition-colors duration-300 cursor-pointer"
-            aria-label="Next image"
+            aria-label="Next item"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,30 +138,45 @@ const ImageModal = memo(({
           </button>
         </div>
 
-        {/* Image Container */}
+        {/* Content Container */}
         <div
           {...handlers}
           className="absolute inset-0 flex items-center justify-center p-8 cursor-pointer"
         >
-          <img
-            src={imageSrc}
-            alt={imageAlt}
-            className={`max-w-full max-h-full w-auto h-auto object-contain select-none z-[60] ${
-              isDragging ? 'cursor-grabbing' : 'cursor-grab'
-            }`}
-            draggable="false"
-          />
+          {isVideo ? (
+            <video
+              ref={videoRef}
+              src={item.src}
+              className={`max-w-full max-h-full w-auto h-auto object-contain select-none z-[60] ${
+                isDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
+              controls
+              autoPlay
+              loop
+              playsInline
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <img
+              src={item.src}
+              alt={item.alt}
+              className={`max-w-full max-h-full w-auto h-auto object-contain select-none z-[60] ${
+                isDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
+              draggable="false"
+            />
+          )}
         </div>
 
         {/* Dots Navigation */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-[70] max-sm:hidden">
-          {[...Array(totalImages)].map((_, index) => (
+          {[...Array(totalItems)].map((_, index) => (
             <div
               key={index}
               className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                 currentIndex === index ? 'bg-white' : 'bg-white/50'
               }`}
-              aria-label={`Image ${index + 1} of ${totalImages}`}
+              aria-label={`Item ${index + 1} of ${totalItems}`}
             />
           ))}
         </div>
@@ -166,12 +190,14 @@ ImageModal.displayName = 'ImageModal';
 ImageModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  imageSrc: PropTypes.string.isRequired,
-  imageAlt: PropTypes.string.isRequired,
+  item: PropTypes.shape({
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+  }).isRequired,
   onNext: PropTypes.func.isRequired,
   onPrev: PropTypes.func.isRequired,
   currentIndex: PropTypes.number.isRequired,
-  totalImages: PropTypes.number.isRequired
+  totalItems: PropTypes.number.isRequired
 };
 
 export default ImageModal; 
