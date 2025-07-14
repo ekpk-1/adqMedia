@@ -1,4 +1,47 @@
 export const galleryImages = [
+  //Yellow996
+  {
+    id: 46,
+    src: '/gallery/996-1.webp',
+    alt: '',
+    span: 'col-span-12'
+  },
+  {
+    id: 47,
+    src: '/gallery/996-2.webp',
+    alt: '',
+    span: 'col-span-4'
+  },
+  {
+    id: 48,
+    src: '/gallery/996-3.webp',
+    alt: '',
+    span: 'col-span-4'
+  },
+  {
+    id: 49,
+    src: '/gallery/996-4.webp',
+    alt: '',
+    span: 'col-span-4'
+  },
+  {
+    id: 50,
+    src: '/gallery/996-5.webp',
+    alt: '',
+    span: 'col-span-6'
+  },
+  {
+    id: 51,
+    src: '/gallery/996-6.webp',
+    alt: '',
+    span: 'col-span-6'
+  },
+  {
+    id: 52,
+    src: '/gallery/996-7.webp',
+    alt: '',
+    span: 'col-span-12'
+  },
   //rushsM3
   {
     id: 1,
@@ -122,7 +165,7 @@ export const galleryImages = [
     id: 20,
     src: '/gallery/evo5.jpg',
     alt: 'Yellow EVO - Interior',
-    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-12'  
+    span: 'col-span-4 lg:col-span-4 aspect-square max-sm:col-span-6 max-sm:row-start-16'  
   },
   //EK
   {
