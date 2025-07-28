@@ -14,7 +14,7 @@ const CommercialPage = () => {
                     <div className="grid grid-cols-12 gap-4 lg:gap-8 grid-flow-dense my-10">
                         <div className="col-span-4 max-sm:col-span-12">
                             <h2 className="text-white text-heading-2 font-black text-xl xl:text-5xl lg:text-4xl md:text-3xl">
-                                Day Ones Studio
+                                Pakenham CarCo
                             </h2>
                         </div>
                         {pakenhamcarcoImages.map((image) => (
