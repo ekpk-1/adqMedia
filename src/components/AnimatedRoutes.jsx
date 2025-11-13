@@ -4,22 +4,24 @@ import ServicesPage from "../pages/ServicesPage";
 import ShowcasePage from "../pages/ShowcasePage";
 import CommercialPage from "../pages/CommercialPage";
 import { AnimatePresence } from "framer-motion";
+import AboutMePage from "../pages/AboutMePage";
 
 function AnimatedRoutes() {
-    const location = useLocation()
+    const location = useLocation();
 
-  return (
-    <AnimatePresence mode="wait" initial={false}>
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<ShowcasePage />} />
-            <Route path="services" element={<ServicesPage />} />
-            <Route path="showcase" element={<ShowcasePage />} />
-            <Route path="commercial" element={<CommercialPage />} />
-          </Route>
-        </Routes>
-    </AnimatePresence>
-  );
+    return (
+        <AnimatePresence mode="wait" initial={false}>
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<ShowcasePage />} />
+                    <Route path="services" element={<ServicesPage />} />
+                    <Route path="showcase" element={<ShowcasePage />} />
+                    <Route path="commercial" element={<CommercialPage />} />
+                    <Route path="about" element={<AboutMePage />} />
+                </Route>
+            </Routes>
+        </AnimatePresence>
+    );
 }
 
 export default AnimatedRoutes;
