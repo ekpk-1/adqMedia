@@ -48,43 +48,7 @@ const AboutMePage = () => {
                                 </p>
                             </div>
                         </div>
-
-                        {/* Services Section */}
-                        <div>
-                            <h2 className="text-4xl font-black mb-8">
-                                Services
-                            </h2>
-                            <p className="text-lg mb-12">
-                                I provide high quality video production and
-                                photography services tailored for automotive
-                                businesses and brands helping them enhance their
-                                social media presence and engage more
-                                effectively with their community.
-                            </p>
-
-                            {/* Contact Section */}
-                            <div className="mt-12">
-                                <p className="text-lg">
-                                    Please contact through{" "}
-                                    <a
-                                        href="mailto:alexdquach@gmail.com"
-                                        className="text-blue-400 hover:text-blue-300"
-                                    >
-                                        alexdquach@gmail.com
-                                    </a>{" "}
-                                    or through Instagram{" "}
-                                    <a
-                                        href="https://instagram.com/adq.media"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-400 hover:text-blue-300"
-                                    >
-                                        @adq.media
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                        <ContactForm />
+                        <ContactForm colSpan="col-span-1" />
                     </div>
                 </div>
             </section>

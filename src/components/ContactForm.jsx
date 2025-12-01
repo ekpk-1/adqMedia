@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 
-const ContactForm = () => {
+const ContactForm = ({
+    colSpan = "col-span-1 xl:col-span-2 lg:col-span-2",
+}) => {
     const form = useRef();
     const [status, setStatus] = useState("");
 
@@ -27,7 +29,7 @@ const ContactForm = () => {
 
     return (
         <div
-            className="w-full mx-auto py-6 px-16 bg-zinc-900 rounded-lg shadow-lg col-span-1 xl:col-span-2 lg:col-span-2 max-sm:w-full max-sm:px-4 max-sm:py-4"
+            className={`w-full mx-auto py-6 px-16 bg-zinc-900 rounded-lg shadow-lg ${colSpan} max-sm:w-full max-sm:px-4 max-sm:py-4`}
             id="contact-form"
         >
             <h2 className="text-2xl font-bold text-white mx-auto text-center mb-10 max-sm:my-6">
