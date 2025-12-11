@@ -100,7 +100,7 @@ const ServicesPage = () => {
                                     <h3 className="text-xl font-bold mb-3">
                                         Pricing
                                     </h3>
-                                    <p className="text-lg mb-6">$250</p>
+                                    <p className="text-lg mb-6">$300</p>
                                 </div>
                             </div>
                             <div className="">

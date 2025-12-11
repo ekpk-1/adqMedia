@@ -50,7 +50,7 @@ const Navbar = () => {
                             className="text-white font-medium text-4xl relative hover:text-red-400 transition-all duration-300 font-bebas-neue"
                         >
                             ADQ
-                            <span className="absolute -top-1 -right-3 w-2 h-2 bg-red-400 rounded-full"></span>
+                            <span className="absolute -top-1 -right-3 w-2 h-2 bg-red-400 rounded-full animate-pulse-dot"></span>
                         </Link>
                     </div>
 
