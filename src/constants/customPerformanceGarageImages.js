@@ -1,0 +1,52 @@
+export const customPerformanceGarageImages = [
+    {
+        id: 1,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08735.webp",
+        alt: "Custom Performance Garage Image 1",
+        span: "col-span-8 aspect-[16/12] max-sm:col-span-12",
+    },
+    {
+        id: 2,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08742.webp",
+        alt: "Custom Performance Garage Image 2",
+        span: "col-span-4",
+    },
+    {
+        id: 3,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08746.webp",
+        alt: "Custom Performance Garage Image 3",
+        span: "col-span-4",
+    },
+    {
+        id: 4,
+        type: "video",
+        src: "/commercialGallery/Custom Performance Garage/Copy of CPG December.webm",
+        alt: "Custom Performance Garage Video 1",
+        span: "col-span-4",
+        poster: "/commercialGallery/Custom Performance Garage/image.png",
+    },
+    {
+        id: 5,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08753.webp",
+        alt: "Custom Performance Garage Image 4",
+        span: "col-span-4",
+    },
+    {
+        id: 6,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08766.webp",
+        alt: "Custom Performance Garage Image 5",
+        span: "col-span-4",
+    },
+    {
+        id: 7,
+        type: "image",
+        src: "/commercialGallery/Custom Performance Garage/DSC08783.webp",
+        alt: "Custom Performance Garage Image 6",
+        span: "col-span-4",
+    },
+];

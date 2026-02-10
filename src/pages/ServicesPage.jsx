@@ -42,11 +42,6 @@ const ServicesPage = () => {
                                         convenient for you, whether at your home
                                         or a nice location closeby.
                                     </p>
-
-                                    <h3 className="text-xl font-bold mb-3">
-                                        Pricing
-                                    </h3>
-                                    <p className="text-lg mb-6">$150</p>
                                 </div>
                             </div>
                             <div className="">
@@ -96,11 +91,6 @@ const ServicesPage = () => {
                                         warehouse, offering convenience at your
                                         door.
                                     </p>
-
-                                    <h3 className="text-xl font-bold mb-3">
-                                        Pricing
-                                    </h3>
-                                    <p className="text-lg mb-6">$300</p>
                                 </div>
                             </div>
                             <div className="">

@@ -1,0 +1,51 @@
+export const vertexDetailingImages = [
+    {
+        id: 1,
+        type: "image",
+        src: "/commercialGallery/Vertex Detailing/DSC08581.webp",
+        alt: "Vertex Detailing Image 1",
+        span: "col-span-8 aspect-[16/14]",
+    },
+    {
+        id: 4,
+        type: "video",
+        src: "/commercialGallery/Vertex Detailing/Red Genesis.webm",
+        alt: "Vertex Detailing Video 1",
+        span: "col-span-4",
+    },
+    {
+        id: 2,
+        type: "image",
+        src: "/commercialGallery/Vertex Detailing/DSC08596.webp",
+        alt: "Vertex Detailing Image 2",
+        span: "col-span-4",
+    },
+    {
+        id: 3,
+        type: "image",
+        src: "/commercialGallery/Vertex Detailing/DSC08602.webp",
+        alt: "Vertex Detailing Image 3",
+        span: "col-span-4",
+    },
+    {
+        id: 5,
+        type: "image",
+        src: "/commercialGallery/Vertex Detailing/DSC08665.webp",
+        alt: "Vertex Detailing Image 4",
+        span: "col-span-4",
+    },
+    {
+        id: 6,
+        type: "image",
+        src: "/commercialGallery/Vertex Detailing/DSC08680.webp",
+        alt: "Vertex Detailing Image 5",
+        span: "col-span-4",
+    },
+    {
+        id: 7,
+        type: "video",
+        src: "/commercialGallery/Vertex Detailing/Vertex Black DC5.webm",
+        alt: "Vertex Detailing Video 2",
+        span: "col-span-4",
+    },
+];
