@@ -19,29 +19,29 @@ const AboutMePage = () => {
                                 <p className="text-lg">
                                     Alex is a professional car photographer and
                                     videographer based in Melbourne Australia.
-                                    Fuelled by a strong passion for cars. I
-                                    began my career in automotive photography
+                                    Fuelled by a strong passion for cars. Alex
+                                    began his career in automotive photography
                                     and videography as a freelance creator mid
-                                    2024. I have gained extensive experience
-                                    with my own professional camera and
-                                    equipment, enabling me to approach each
+                                    2024. He has gained extensive experience
+                                    with his own professional camera and
+                                    equipment, enabling him to approach each
                                     project with the tools and expertise
                                     required to consistently deliver high
                                     quality results.
                                 </p>
 
                                 <p className="text-lg">
-                                    Additionally, I have gained professional
+                                    Additionally, Alex has gained professional
                                     experience as a dealership photographer
                                     producing high quality photos for 500+ new
-                                    and used vehicle listings. I have worked
+                                    and used vehicle listings. He has worked
                                     closely with multiple companies elevating
                                     their online presence in social media.
                                 </p>
 
                                 <p className="text-lg">
-                                    My passion for luxury and performance cars
-                                    serves as both inspiration and the
+                                    Alex's passion for luxury and performance
+                                    cars serves as both inspiration and the
                                     foundation of my freelance work and I aspire
                                     to further cultivate this interest
                                     throughout my professional career.
