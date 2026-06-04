@@ -32,7 +32,7 @@ const CommercialPage = () => {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-100 group-hover:opacity-90 transition-opacity duration-300" />
                                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                                    <h2 className="text-white text-2xl md:text-3xl lg:text-2xl/8">
+                                    <h2 className="text-white text-2xl md:text-3xl lg:text-xl/8">
                                         {client.name}
                                     </h2>
                                 </div>

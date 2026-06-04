@@ -1,5 +1,3 @@
-import { pakenhamcarcoImages } from "./pakenhamcarcoImages";
-import { acostarImages } from "./acostarImages";
 import { dayonestudioImages } from "./dayonestudioImages";
 import { vertexDetailingImages } from "./vertexDetailingImages";
 import { trutintImages } from "./trutintImages";
@@ -43,17 +41,5 @@ export const clients = [
         name: "Day Ones Studio",
         thumbnail: "/commercialGallery/dayonestudio-1.jpg",
         media: dayonestudioImages,
-    },
-    {
-        slug: "acostar-logistics",
-        name: "Acostar Logistics",
-        thumbnail: "/commercialGallery/acostar4.jpg",
-        media: acostarImages,
-    },
-    {
-        slug: "pakenham-carco",
-        name: "Pakenham Carco",
-        thumbnail: "/commercialGallery/PakenhamCarco/DSC02121.webp",
-        media: pakenhamcarcoImages,
     },
 ];
