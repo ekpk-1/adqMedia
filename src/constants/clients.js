@@ -2,6 +2,8 @@ import { dayonestudioImages } from "./dayonestudioImages";
 import { vertexDetailingImages } from "./vertexDetailingImages";
 import { trutintImages } from "./trutintImages";
 import { kaAutosportImages } from "./kaAutosportImages";
+import { dreamworksAutoImages } from "./dreamworksAutoImages";
+import { detailXImages } from "./detailXImages";
 import { distinctAutobodyImages } from "./distinctAutobodyImages";
 import { customPerformanceGarageImages } from "./customPerformanceGarageImages";
 
@@ -23,6 +25,18 @@ export const clients = [
         name: "KA Autosport",
         thumbnail: "/commercialGallery/KA Autosport/DSC08986.webp",
         media: kaAutosportImages,
+    },
+    {
+        slug: "dreamworks-auto",
+        name: "Dreamworks Auto",
+        thumbnail: "/commercialGallery/Dreamworks Auto/DSC09862.webp",
+        media: dreamworksAutoImages,
+    },
+    {
+        slug: "detail-x",
+        name: "DetailX",
+        thumbnail: "/commercialGallery/DetailX/DSC02395.webp",
+        media: detailXImages,
     },
     {
         slug: "trutint",

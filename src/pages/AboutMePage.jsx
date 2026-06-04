@@ -42,9 +42,9 @@ const AboutMePage = () => {
                                 <p className="text-lg">
                                     Alex's passion for luxury and performance
                                     cars serves as both inspiration and the
-                                    foundation of my freelance work and I aspire
-                                    to further cultivate this interest
-                                    throughout my professional career.
+                                    foundation of his freelance work and aspires
+                                    to further cultivate his passion for cars
+                                    throughout his professional career.
                                 </p>
                             </div>
                         </div>
