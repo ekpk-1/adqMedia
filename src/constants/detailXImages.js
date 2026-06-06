@@ -1,19 +1,5 @@
 export const detailXImages = [
     {
-        id: 1,
-        type: "image",
-        src: "/commercialGallery/DetailX/DSC02395.webp",
-        alt: "DetailX Image 1",
-        span: "col-span-8 aspect-[16/12] max-sm:col-span-12",
-    },
-    {
-        id: 2,
-        type: "video",
-        src: "/commercialGallery/DetailX/Denza PPF.webm",
-        alt: "DetailX Video 1",
-        span: "col-span-4",
-    },
-    {
         id: 3,
         type: "image",
         src: "/commercialGallery/DetailX/DSC01274.webp",
@@ -37,7 +23,7 @@ export const detailXImages = [
     {
         id: 6,
         type: "video",
-        src: "/commercialGallery/DetailX/PCZ M4.webm",
+        src: "/commercialGallery/DetailX/Ferrari 296 GTB.webm",
         alt: "DetailX Video 2",
         span: "col-span-6",
     },
@@ -63,31 +49,45 @@ export const detailXImages = [
         span: "col-span-6",
     },
     {
-        id: 10,
-        type: "video",
-        src: "/commercialGallery/DetailX/Tesla SATIN PPF.webm",
-        alt: "DetailX Video 4",
-        span: "col-span-4",
-    },
-    {
         id: 11,
         type: "image",
         src: "/commercialGallery/DetailX/DSC02246.webp",
         alt: "DetailX Image 7",
+        span: "col-span-8 aspect-[16/12] max-sm:col-span-12",
+    },
+    {
+        id: 2,
+        type: "video",
+        src: "/commercialGallery/DetailX/Denza PPF.webm",
+        alt: "DetailX Video 1",
         span: "col-span-4",
+    },
+    {
+        id: 1,
+        type: "image",
+        src: "/commercialGallery/DetailX/DSC02395.webp",
+        alt: "DetailX Image 1",
+        span: "col-span-9 aspect-[16/12] max-sm:col-span-12",
     },
     {
         id: 12,
         type: "image",
         src: "/commercialGallery/DetailX/DSC02269.webp",
         alt: "DetailX Image 8",
-        span: "col-span-4",
+        span: "col-span-3",
+    },
+    {
+        id: 10,
+        type: "video",
+        src: "/commercialGallery/DetailX/Tesla SATIN PPF.webm",
+        alt: "DetailX Video 4",
+        span: "col-span-3",
     },
     {
         id: 13,
         type: "image",
         src: "/commercialGallery/DetailX/DSC02393.webp",
         alt: "DetailX Image 9",
-        span: "col-span-8 aspect-[16/9] max-sm:col-span-12",
+        span: "col-span-9 aspect-[16/9] max-sm:col-span-12",
     },
 ];

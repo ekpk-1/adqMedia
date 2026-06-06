@@ -49,13 +49,6 @@ export const dreamworksAutoImages = [
         span: "col-span-6",
     },
     {
-        id: 8,
-        type: "video",
-        src: "/commercialGallery/Dreamworks Auto/Ferrari 296 GTB.webm",
-        alt: "Dreamworks Auto Video 3",
-        span: "col-span-6",
-    },
-    {
         id: 9,
         type: "image",
         src: "/commercialGallery/Dreamworks Auto/DSC00439.webp",
@@ -98,13 +91,6 @@ export const dreamworksAutoImages = [
         span: "col-span-4",
     },
     {
-        id: 15,
-        type: "image",
-        src: "/commercialGallery/Dreamworks Auto/DSC00547.webp",
-        alt: "Dreamworks Auto Image 12",
-        span: "col-span-8 aspect-[16/9] max-sm:col-span-12",
-    },
-    {
         id: 16,
         type: "image",
         src: "/commercialGallery/Dreamworks Auto/DSC01319.webp",
@@ -117,5 +103,19 @@ export const dreamworksAutoImages = [
         src: "/commercialGallery/Dreamworks Auto/DSC01325.webp",
         alt: "Dreamworks Auto Image 14",
         span: "col-span-4",
+    },
+    {
+        id: 15,
+        type: "image",
+        src: "/commercialGallery/Dreamworks Auto/DSC00547.webp",
+        alt: "Dreamworks Auto Image 12",
+        span: "col-span-9 aspect-[16/9] max-sm:col-span-12",
+    },
+    {
+        id: 8,
+        type: "video",
+        src: "/commercialGallery/Dreamworks Auto/PCZ M4.webm",
+        alt: "Dreamworks Auto Video 3",
+        span: "col-span-3",
     },
 ];
