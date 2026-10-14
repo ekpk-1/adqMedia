@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+/* Raw tokens from the Paper "ADQ Media — Design System" file. */
+:root {
+    --dark-background: #0f0f0f;
+    --dark-surface: #1a1a1a;
+    --dark-text: #ffffff;
+    --dark-text-muted: #9f9f9f;
+    --dark-line: #ffffff4d;
+    --dark-scrim: #0f0f0fb8;
+
+    --light-background: #ebebeb;
+    --light-surface: #ffffff;
+    --light-text: #0f0f0f;
+    --light-text-muted: #676767;
+    --light-line: #00000033;
+    --light-scrim: #ffffffcc;
+
+    --red: #bf1e2e;
+    --red-bright: #d93241;
+}
+
+/*
+ * Semantic tokens. Dark is the default; the theme script adds .theme-light to
+ * <html> before first paint. .tone-dark pins footage surfaces to dark, and
+ * .tone-invert flips to the opposite of the active theme.
+ */
+:root,
+.tone-dark,
+:root.theme-light .tone-invert {
+    --bg: var(--dark-background);
+    --surface: var(--dark-surface);
+    --fg: var(--dark-text);
+    --fg-muted: var(--dark-text-muted);
+    --line: var(--dark-line);
+    --scrim: var(--dark-scrim);
+    color-scheme: dark;
+}
+
+:root.theme-light,
+.tone-light,
+:root:not(.theme-light) .tone-invert {
+    --bg: var(--light-background);
+    --surface: var(--light-surface);
+    --fg: var(--light-text);
+    --fg-muted: var(--light-text-muted);
+    --line: var(--light-line);
+    --scrim: var(--light-scrim);
+    color-scheme: light;
+}
+
+@media (max-width: 767px) {
+    :root .tone-dark-mobile {
+        --bg: var(--dark-background);
+        --fg: var(--dark-text);
+        --fg-muted: var(--dark-text-muted);
+        --line: var(--dark-line);
+        color: var(--fg);
+    }
+}
+
+.tone-dark,
+.tone-light,
+.tone-invert {
+    color: var(--fg);
+}
+
+@theme inline {
+    --color-background: var(--bg);
+    --color-surface: var(--surface);
+    --color-text: var(--fg);
+    --color-text-muted: var(--fg-muted);
+    --color-line: var(--line);
+    --color-scrim: var(--scrim);
+    --color-accent: var(--red);
+    --color-accent-hover: var(--red-bright);
+    --color-overlay: #00000080;
+
+    --font-sans: var(--font-satoshi), system-ui, sans-serif;
+    --font-display: var(--font-bebas), "Bebas Neue", sans-serif;
+
+    --text-label: 11px;
+    --text-label--line-height: 16px;
+    --text-label--letter-spacing: 0.06em;
+    --text-body: 16px;
+    --text-body--line-height: 24px;
+    --text-subhead: 24px;
+    --text-subhead--line-height: 30px;
+    --text-heading: 36px;
+    --text-heading--line-height: 40px;
+    --text-title: 54px;
+    --text-title--line-height: 60px;
+
+    --tracking-label: 0.06em;
+    --tracking-button: 0.08em;
+
+    --breakpoint-md: 768px;
+}
+
+@layer base {
+    html {
+        background: var(--bg);
+        color: var(--fg);
+        -webkit-font-smoothing: antialiased;
+        font-synthesis: none;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        min-height: 100svh;
+    }
+
+    ::selection {
+        background: var(--red);
+        color: #fff;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--red-bright);
+        outline-offset: 3px;
+    }
+}
+
+@utility label {
+    font-size: var(--text-label);
+    line-height: 16px;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+@utility label-plain {
+    font-size: var(--text-label);
+    line-height: 16px;
+    letter-spacing: var(--tracking-label);
+    font-weight: 500;
+}
+
+/*
+ * Viewfinder corners drawn by one pseudo-element. Set --vf-size, --vf-inset,
+ * --vf-weight and --vf-color on the element; add .vf-on to show them.
+ */
+@utility viewfinder {
+    position: relative;
+    --vf-size: 10px;
+    --vf-inset: -7px;
+    --vf-weight: 2px;
+    --vf-color: var(--red);
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: var(--vf-inset);
+        pointer-events: none;
+        opacity: 0;
+        scale: 1.06;
+        transition:
+            opacity 160ms ease-out,
+            scale 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+        background:
+            linear-gradient(var(--vf-color) 0 0) top left / var(--vf-size) var(--vf-weight),
+            linear-gradient(var(--vf-color) 0 0) top left / var(--vf-weight) var(--vf-size),
+            linear-gradient(var(--vf-color) 0 0) top right / var(--vf-size) var(--vf-weight),
+            linear-gradient(var(--vf-color) 0 0) top right / var(--vf-weight) var(--vf-size),
+            linear-gradient(var(--vf-color) 0 0) bottom left / var(--vf-size) var(--vf-weight),
+            linear-gradient(var(--vf-color) 0 0) bottom left / var(--vf-weight) var(--vf-size),
+            linear-gradient(var(--vf-color) 0 0) bottom right / var(--vf-size) var(--vf-weight),
+            linear-gradient(var(--vf-color) 0 0) bottom right / var(--vf-weight) var(--vf-size);
+        background-repeat: no-repeat;
+    }
+
+    &.vf-on::after {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+/* Show a viewfinder's corners while its .group ancestor is hovered or focused. */
+@utility vf-group {
+    .group:hover &::after,
+    .group:focus-visible &::after {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+/* Buttons: square, 12px uppercase labels; the active state shows viewfinder corners in place of a focus ring. */
+@utility btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 24px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        background-color 160ms,
+        border-color 160ms,
+        color 160ms;
+
+    &:focus-visible {
+        outline: none;
+    }
+
+    &:hover::after,
+    &:focus-visible::after,
+    &:active::after {
+        opacity: 1;
+        scale: 1;
+    }
+
+    &:disabled {
+        cursor: progress;
+        opacity: 0.7;
+    }
+}
+
+@utility btn-primary {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+@utility btn-secondary {
+    border: 1px solid var(--line);
+    color: var(--fg);
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+        border-color: var(--fg);
+    }
+}
+
+@utility btn-accent {
+    background: var(--red);
+    color: #fff;
+    --vf-color: var(--fg);
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+        background: var(--red-bright);
+    }
+}
+
+/* Links and small controls in the chrome get corners instead of a focus ring. */
+@utility chrome-link {
+    &:focus-visible {
+        outline: none;
+        text-decoration: underline;
+        text-decoration-color: var(--red-bright);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 6px;
+    }
+}
+
+@keyframes marquee-left {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marquee-right {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0ms !important;
+        animation-duration: 0ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Before hydration, hide whichever project view the visitor didn't choose. */
+html[data-project-view="scroll"] [data-project-layout] {
+    visibility: hidden;
+}
