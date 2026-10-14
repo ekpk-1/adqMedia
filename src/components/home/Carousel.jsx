@@ -98,6 +98,7 @@ export function Carousel({ projects }) {
             onWheel={onWheel}
             onPointerDown={onPointerDown}
             onPointerUp={onPointerUp}
+            data-lenis-prevent
             className="fixed inset-0 touch-pan-y overflow-hidden select-none [--carousel-top:150px] [--carousel-w:calc(100vw-96px)] [--neighbour-x:calc(50vw+8px)] md:[--carousel-top:120px] md:[--carousel-w:min(54.17vw,calc((100svh-380px)*1.5))] md:[--neighbour-x:45vw]"
         >
             {projects.map((project, index) => {

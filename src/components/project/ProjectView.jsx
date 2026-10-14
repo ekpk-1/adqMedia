@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { MenuButton, PlusIcon, SiteHeader } from "@/components/chrome/SiteHeader";
 import { useProjectView } from "@/hooks/useProjectView";
+import { scrollToTop } from "@/lib/smoothScroll";
 import { InfoPanel } from "./InfoPanel";
 import { LayoutView } from "./LayoutView";
 import { ScrollView } from "./ScrollView";
@@ -16,7 +17,7 @@ export function ProjectView({ project, neighbours, footer }) {
 
     const changeView = (next) => {
         setView(next);
-        window.scrollTo({ top: 0 });
+        scrollToTop();
     };
 
     const actions = (

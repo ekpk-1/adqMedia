@@ -12,6 +12,7 @@
     "media:manifest": "node scripts/build-media-manifest.mjs"
   },
   "dependencies": {
+    "lenis": "^1.3.26",
     "motion": "^14.2.0",
     "next": "^16.4.0",
     "react": "^19.3.0",

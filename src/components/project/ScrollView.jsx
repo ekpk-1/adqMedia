@@ -31,6 +31,7 @@ export function ScrollView({ project, onOpenInfo }) {
             role="region"
             aria-roledescription="carousel"
             aria-label={`${project.title}, ${items.length} items`}
+            data-lenis-prevent
             className="fixed inset-0 touch-none overflow-hidden outline-none"
         >
             {items.map((media, index) => (
@@ -264,7 +265,7 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
 
 function Filmstrip({ items, active, onPick }) {
     return (
-        <nav aria-label="Jump to item" className="fixed right-10 top-1/2 z-20 flex max-h-[calc(100svh-260px)] -translate-y-1/2 flex-col gap-2 overflow-y-auto p-1 [scrollbar-width:none] max-md:hidden">
+        <nav aria-label="Jump to item" data-lenis-prevent className="fixed right-10 top-1/2 z-20 flex max-h-[calc(100svh-260px)] -translate-y-1/2 flex-col gap-2 overflow-y-auto p-1 [scrollbar-width:none] max-md:hidden">
             {items.map((media, index) => (
                 <button
                     key={media.id}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { lockScroll } from "@/lib/smoothScroll";
 
 const FOCUSABLE =
     'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -18,6 +19,7 @@ export function useDialog(ref, isOpen, onClose) {
         const opener = document.activeElement;
         const previousOverflow = document.documentElement.style.overflow;
         document.documentElement.style.overflow = "hidden";
+        const unlockScroll = lockScroll();
 
         const visible = (element) => element.offsetParent !== null;
         const first =
@@ -51,6 +53,7 @@ export function useDialog(ref, isOpen, onClose) {
         return () => {
             document.removeEventListener("keydown", onKeyDown);
             document.documentElement.style.overflow = previousOverflow;
+            unlockScroll();
             if (opener?.isConnected) opener.focus({ preventScroll: true });
         };
     }, [ref, isOpen, onClose]);

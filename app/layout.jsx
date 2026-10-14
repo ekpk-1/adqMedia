@@ -4,9 +4,11 @@ import { MenuOverlay } from "@/components/chrome/MenuOverlay";
 import { ScreenCorners } from "@/components/chrome/ScreenCorners";
 import { MenuProvider } from "@/components/providers/MenuProvider";
 import { VideoModalProvider } from "@/components/providers/VideoModalProvider";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { getProjects, getSiteSettings } from "@/content/repository";
 import { bootScript } from "@/lib/theme";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -44,6 +46,7 @@ export default function RootLayout({ children }) {
                 <script dangerouslySetInnerHTML={{ __html: bootScript }} />
             </head>
             <body>
+                <SmoothScroll />
                 <ThemeProvider>
                     <MenuProvider>
                         <VideoModalProvider>
