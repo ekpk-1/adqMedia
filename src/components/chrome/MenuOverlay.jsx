@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, animate, motion, motionValue, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useMenu } from "@/components/providers/MenuProvider";
 import { useDialog } from "@/hooks/useDialog";
-import { useCanAutoplay } from "@/hooks/useMediaPreferences";
+import { useCanAutoplay, useReducedMotion } from "@/hooks/useMediaPreferences";
+import { revealPolygon } from "@/lib/revealPolygon";
 import { CloseIcon } from "./SiteHeader";
 import { MelbourneClock } from "./MelbourneClock";
 import { ThemeToggle } from "./ThemeToggle";
@@ -21,20 +22,13 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
     const { isOpen, close } = useMenu();
     const pathname = usePathname();
     const panelRef = useRef(null);
-    const [hovered, setHovered] = useState(null);
     useDialog(panelRef, isOpen, close);
-
-    useEffect(() => {
-        if (!isOpen) setHovered(null);
-    }, [isOpen]);
 
     const rows = [
         { id: "work", href: "/", word: "Work", note: `${projectCount} projects — Creative, Commercial →` },
         { id: "info", href: "/info", word: "Info", note: "About, services, clients" },
         { id: "contact", href: "/info#contact", word: "Contact", note: "Book a shoot" },
     ];
-    const current = currentSection(pathname);
-    const active = hovered ?? current;
 
     return (
         <AnimatePresence>
@@ -68,20 +62,7 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
                         </button>
                     </div>
 
-                    <nav aria-label="Main" className="relative flex flex-1 flex-col" onMouseLeave={() => setHovered(null)}>
-                        <ReelBackdrop reel={reel} />
-                        {rows.map((row, index) => (
-                            <MenuRow
-                                key={row.id}
-                                row={row}
-                                index={index}
-                                isActive={active === index}
-                                isCurrent={current === index}
-                                onHover={() => setHovered(index)}
-                                onNavigate={close}
-                            />
-                        ))}
-                    </nav>
+                    <MenuNav rows={rows} current={currentSection(pathname)} reel={reel} onNavigate={close} />
 
                     <div className="flex items-center justify-between gap-5 p-5 max-md:flex-col max-md:items-start md:px-10 md:py-9">
                         <a href={`mailto:${email}`} className="chrome-link text-body font-medium text-text">
@@ -108,6 +89,65 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
     );
 }
 
+const REVEAL = { duration: 0.7, ease: [0.7, 0, 0.2, 1] };
+
+/**
+ * One reveal band per row, from `start` to `end` across the width. The active
+ * row wipes in from the left; a row that loses focus wipes out to the right.
+ * All bands feed a single clip shape on the reel, so neighbouring rows never
+ * leave a seam between them.
+ */
+function useRowReveal(count, active) {
+    const reduced = useReducedMotion();
+    const [bands] = useState(() => Array.from({ length: count }, () => ({ start: motionValue(0), end: motionValue(0) })));
+    const clipPath = useTransform(
+        bands.flatMap((band) => [band.start, band.end]),
+        (values) => revealPolygon(bands.map((_, index) => ({ start: values[index * 2], end: values[index * 2 + 1] })))
+    );
+
+    useEffect(() => {
+        const options = reduced ? { duration: 0 } : REVEAL;
+        const running = [];
+        bands.forEach((band, index) => {
+            if (index === active) {
+                if (band.start.get() >= 100) {
+                    band.start.jump(0);
+                    band.end.jump(0);
+                }
+                running.push(animate(band.start, 0, options), animate(band.end, 100, options));
+            } else if (band.end.get() > band.start.get()) {
+                running.push(animate(band.start, 100, options), animate(band.end, 100, options));
+            }
+        });
+        return () => running.forEach((animation) => animation.stop());
+    }, [active, bands, reduced]);
+
+    return clipPath;
+}
+
+function MenuNav({ rows, current, reel, onNavigate }) {
+    const [hovered, setHovered] = useState(null);
+    const active = hovered ?? current;
+    const clipPath = useRowReveal(rows.length, active);
+
+    return (
+        <nav aria-label="Main" className="relative flex flex-1 flex-col" onMouseLeave={() => setHovered(null)}>
+            <ReelBackdrop reel={reel} clipPath={clipPath} />
+            {rows.map((row, index) => (
+                <MenuRow
+                    key={row.id}
+                    row={row}
+                    index={index}
+                    isActive={active === index}
+                    isCurrent={current === index}
+                    onHover={() => setHovered(index)}
+                    onNavigate={onNavigate}
+                />
+            ))}
+        </nav>
+    );
+}
+
 function MenuRow({ row, index, isActive, isCurrent, onHover, onNavigate }) {
     return (
         <Link
@@ -120,12 +160,6 @@ function MenuRow({ row, index, isActive, isCurrent, onHover, onNavigate }) {
                 isActive ? "border-accent" : "border-line"
             }`}
         >
-            {/* The row's own background. Activating it peels away left to right to show the reel underneath. */}
-            <span
-                aria-hidden
-                className="absolute inset-0 bg-background transition-[clip-path] duration-700 ease-[cubic-bezier(0.7,0,0.2,1)] motion-reduce:transition-none"
-                style={{ clipPath: isActive ? "inset(0 0 0 100%)" : "inset(0 0 0 0)" }}
-            />
             <span className={`contents ${isActive ? "tone-dark" : ""}`}>
                 <span className="label-plain absolute left-5 top-4 text-text transition-colors duration-500 md:left-10 md:top-5">
                     {String(index + 1).padStart(2, "0")}
@@ -153,8 +187,8 @@ function MenuRow({ row, index, isActive, isCurrent, onHover, onNavigate }) {
     );
 }
 
-/** One reel filling the whole nav, sitting under every row's background. */
-function ReelBackdrop({ reel }) {
+/** One reel filling the whole nav, cut down to the revealed rows. */
+function ReelBackdrop({ reel, clipPath }) {
     const canPlay = useCanAutoplay();
     const videoRef = useRef(null);
 
@@ -166,7 +200,7 @@ function ReelBackdrop({ reel }) {
     }, [canPlay]);
 
     return (
-        <div aria-hidden className="tone-dark pointer-events-none absolute inset-0 overflow-hidden bg-background">
+        <motion.div aria-hidden style={{ clipPath }} className="tone-dark pointer-events-none absolute inset-0 overflow-hidden bg-background">
             {canPlay ? (
                 <video
                     ref={videoRef}
@@ -182,6 +216,6 @@ function ReelBackdrop({ reel }) {
                 <img src={reel.poster.src} alt="" className="size-full object-cover" />
             )}
             <div className="absolute inset-0 bg-overlay" />
-        </div>
+        </motion.div>
     );
 }
