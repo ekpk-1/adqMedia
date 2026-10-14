@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { AutoVideo } from "@/components/media/AutoVideo";
 import { Photo } from "@/components/media/Photo";
 import { PlusIcon } from "@/components/chrome/SiteHeader";
+import { useVideoModal } from "@/components/providers/VideoModalProvider";
 import { useCanAutoplay, useReducedMotion } from "@/hooks/useMediaPreferences";
 import { useVideoClock } from "@/hooks/useVideoClock";
 import { formatDuration } from "@/lib/projects";
@@ -11,9 +13,13 @@ import { ProgressLine, useVideoControls } from "./VideoSlot";
 
 const pad = (n) => String(n).padStart(2, "0");
 
-/** Each item fills the screen; wheel, keys and swipes step one item up or down. */
+/**
+ * One item at a time. Only the media moves: wheel, keys and swipes slide the
+ * frames up or down, while the caption and controls stay put and update.
+ */
 export function ScrollView({ project, onOpenInfo }) {
     const stageRef = useRef(null);
+    const videosRef = useRef([]);
     const [active, setActive] = useState(0);
     const items = project.items;
     const reduced = useReducedMotion();
@@ -44,18 +50,32 @@ export function ScrollView({ project, onOpenInfo }) {
                     className={`absolute inset-0 will-change-transform ${reduced ? "" : "transition-transform duration-700 ease-[cubic-bezier(0.7,0,0.2,1)]"}`}
                     style={{ transform: `translateY(${(index - active) * 100}%)` }}
                 >
-                    <ScrollSlide
+                    <SlideMedia
                         media={media}
                         index={index}
-                        total={items.length}
-                        project={project}
                         isActive={active === index}
-                        next={items[index + 1]}
-                        onNext={() => goTo(index + 1)}
-                        onOpenInfo={onOpenInfo}
+                        videoRef={(node) => {
+                            videosRef.current[index] = node;
+                        }}
                     />
                 </section>
             ))}
+
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[120px] bg-gradient-to-b from-[#0f0f0f99] to-transparent md:hidden" />
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[260px] bg-gradient-to-b from-transparent to-[#0f0f0fd9] md:hidden" />
+
+            <SlideDetails
+                key={active}
+                media={items[active]}
+                index={active}
+                total={items.length}
+                title={project.title}
+                next={items[active + 1]}
+                getVideo={() => videosRef.current[active]}
+                onNext={() => goTo(active + 1)}
+                onOpenInfo={onOpenInfo}
+                animateIn={!reduced}
+            />
             <Filmstrip items={items} active={active} onPick={goTo} />
             <Pips count={items.length} active={active} onPick={goTo} />
         </div>
@@ -159,59 +179,82 @@ function frameStyle(media) {
     };
 }
 
-function ScrollSlide({ media, index, total, project, isActive, next, onNext, onOpenInfo }) {
+/** The moving part: just the framed photo or film. */
+function SlideMedia({ media, index, isActive, videoRef }) {
     const isVideo = media.type === "video";
-    const videoRef = useRef(null);
     const canAutoplay = useCanAutoplay();
+    const modal = useVideoModal();
+    const localRef = useRef(null);
+
+    const setRef = (node) => {
+        localRef.current = node;
+        videoRef(node);
+    };
+
+    const expand = () => {
+        const video = localRef.current;
+        if (video) video.muted = true;
+        modal.open(media, { startAt: video?.currentTime ?? 0 });
+    };
+
+    return (
+        <div
+            className="tone-dark absolute overflow-hidden bg-background max-md:inset-0 md:left-1/2 md:top-[100px] md:aspect-(--frame-ar) md:w-(--frame-w) md:-translate-x-1/2"
+            style={frameStyle(media)}
+        >
+            {isVideo ? (
+                <>
+                    <AutoVideo ref={setRef} media={media} active={isActive && canAutoplay} threshold={0.6} />
+                    <button
+                        type="button"
+                        onClick={expand}
+                        aria-haspopup="dialog"
+                        aria-label={`Play ${media.alt}`}
+                        className="absolute inset-0 cursor-zoom-in outline-none"
+                    />
+                </>
+            ) : (
+                <Photo media={media} sizes="(max-width: 767px) 100vw, 80vw" priority={index === 0} />
+            )}
+        </div>
+    );
+}
+
+/** The fixed part: counter, title and controls for whichever item is showing. */
+function SlideDetails({ media, index, total, title, next, getVideo, onNext, onOpenInfo, animateIn }) {
+    const isVideo = media.type === "video";
+    const [videoRef] = useState(() => ({
+        get current() {
+            return getVideo();
+        },
+    }));
     const controls = useVideoControls(videoRef, media);
     const clock = useVideoClock(videoRef, media.duration);
     const ratio = clock.duration ? clock.current / clock.duration : 0;
     const counter = `${pad(index + 1)} / ${pad(total)}`;
     const filmLabel = isVideo ? ` · Film · ${formatDuration(clock.current)} / ${formatDuration(clock.duration)}` : "";
 
-    const mediaNode = isVideo ? (
-        <AutoVideo
-            ref={videoRef}
-            media={media}
-            active={isActive && canAutoplay && !controls.paused}
-            muted={controls.muted}
-            threshold={0.6}
-        />
-    ) : (
-        <Photo media={media} sizes="(max-width: 767px) 100vw, 80vw" priority={index === 0} />
+    useEffect(
+        () => () => {
+            const video = videoRef.current;
+            if (video) video.muted = true;
+        },
+        [videoRef]
     );
+
+    const swap = animateIn
+        ? { initial: { opacity: 0, y: 6 }, animate: { opacity: 1, y: 0 }, transition: { delay: 0.2, duration: 0.45, ease: [0.2, 0.8, 0.2, 1] } }
+        : {};
 
     return (
         <>
-            <div
-                className="tone-dark absolute overflow-hidden bg-background max-md:inset-0 md:left-1/2 md:top-[100px] md:aspect-(--frame-ar) md:w-(--frame-w) md:-translate-x-1/2"
-                style={frameStyle(media)}
-            >
-                {mediaNode}
-                {isVideo ? (
-                    <button
-                        type="button"
-                        onClick={controls.expand}
-                        aria-haspopup="dialog"
-                        aria-label={`Play ${media.alt}`}
-                        className="absolute inset-0 cursor-zoom-in outline-none"
-                    />
-                ) : null}
-                {isVideo ? <ProgressLine ratio={ratio} className="absolute inset-x-0 bottom-0 h-[3px] max-md:hidden" /> : null}
-            </div>
-
-            <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[120px] bg-gradient-to-b from-[#0f0f0f99] to-transparent md:hidden" />
-            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[260px] bg-gradient-to-b from-transparent to-[#0f0f0fd9] md:hidden" />
-
-            <div className="tone-dark-mobile absolute inset-x-5 bottom-[30px] flex flex-col gap-3 md:inset-x-auto md:bottom-10 md:left-10 md:w-[400px] md:gap-4">
-                <span className="label leading-[14px] text-text-muted max-md:text-white/80">
+            <div className="tone-dark-mobile absolute inset-x-5 bottom-[30px] z-10 flex flex-col gap-3 md:inset-x-auto md:bottom-10 md:left-10 md:w-[400px] md:gap-4">
+                <motion.span {...swap} aria-live="polite" className="label leading-[14px] text-text-muted max-md:text-white/80">
                     {counter}
                     {filmLabel}
-                </span>
-                <span className="font-display text-[52px] uppercase leading-[48px] text-text md:text-[72px] md:leading-16">
-                    {project.title}
-                </span>
-                <div className="flex items-center gap-6">
+                </motion.span>
+                <span className="font-display text-[52px] uppercase leading-[48px] text-text md:text-[72px] md:leading-16">{title}</span>
+                <motion.div {...swap} className="flex items-center gap-6">
                     {isVideo ? (
                         <>
                             <button type="button" onClick={controls.toggleSound} aria-pressed={!controls.muted} className="chrome-link label leading-[14px] text-text">
@@ -238,11 +281,11 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
                             Next ↓
                         </button>
                     ) : null}
-                </div>
-                {isVideo ? <ProgressLine ratio={ratio} className="md:hidden" /> : null}
+                </motion.div>
+                {isVideo ? <ProgressLine ratio={ratio} /> : null}
             </div>
 
-            <div className="absolute bottom-10 right-10 flex flex-col items-end gap-2 max-md:hidden">
+            <motion.div {...swap} className="absolute bottom-10 right-10 z-10 flex flex-col items-end gap-2 max-md:hidden">
                 {next ? (
                     <>
                         <span className="label leading-[14px] text-text-muted">Next · {next.type === "video" ? "Film" : `Photo ${pad(index + 2)}`}</span>
@@ -258,7 +301,7 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
                 ) : (
                     <span className="label leading-[14px] text-text-muted">End of project</span>
                 )}
-            </div>
+            </motion.div>
         </>
     );
 }
