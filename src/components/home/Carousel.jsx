@@ -123,9 +123,9 @@ export function Carousel({ projects }) {
                     </span>
                     <Link
                         href={`/work/${current.slug}`}
-                        className="chrome-link truncate text-heading font-medium tracking-[-0.02em] text-text md:text-title"
+                        className="chrome-link max-w-full self-start text-heading font-medium tracking-[-0.02em] text-text md:text-title"
                     >
-                        {current.title}
+                        <span className="block truncate">{current.title}</span>
                     </Link>
                 </div>
                 <div className="flex items-baseline gap-1 pb-2.5">
@@ -135,13 +135,17 @@ export function Carousel({ projects }) {
             </div>
 
             <div className="absolute inset-x-5 bottom-[30px] z-10 flex items-center justify-between md:inset-x-10 md:bottom-[36px]">
-                <button type="button" onClick={() => step(-1)} className="chrome-link label w-[100px] text-left text-text-muted hover:text-text md:w-[200px]">
-                    ← Prev
-                </button>
+                <div className="flex w-[100px] md:w-[200px]">
+                    <button type="button" onClick={() => step(-1)} className="chrome-link label text-text-muted transition-colors hover:text-text">
+                        ← Prev
+                    </button>
+                </div>
                 <TickRuler count={count} active={active} onPick={setActive} />
-                <button type="button" onClick={() => step(1)} className="chrome-link label w-[100px] text-right text-text md:w-[200px]">
-                    Next →
-                </button>
+                <div className="flex w-[100px] justify-end md:w-[200px]">
+                    <button type="button" onClick={() => step(1)} className="chrome-link label text-text">
+                        Next →
+                    </button>
+                </div>
             </div>
         </section>
     );

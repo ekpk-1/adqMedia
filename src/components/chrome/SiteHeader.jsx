@@ -6,7 +6,7 @@ import { Wordmark } from "./Wordmark";
 
 export function PlusIcon() {
     return (
-        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0">
+        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="icon-turn shrink-0">
             <path d="M5 0v10M0 5h10" stroke="currentColor" strokeWidth="1.2" />
         </svg>
     );
@@ -14,7 +14,7 @@ export function PlusIcon() {
 
 export function CloseIcon() {
     return (
-        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0">
+        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="icon-turn shrink-0">
             <path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" strokeWidth="1.2" />
         </svg>
     );

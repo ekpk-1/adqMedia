@@ -7,7 +7,7 @@ export function Wordmark({ size = "md", href = "/", onClick }) {
             href={href}
             onClick={onClick}
             aria-label="ADQ Media, all work"
-            className="chrome-link relative inline-flex shrink-0 pr-3 font-display text-text"
+            className="group relative inline-flex shrink-0 pr-3 font-display text-text"
         >
             <span
                 className={
@@ -20,11 +20,11 @@ export function Wordmark({ size = "md", href = "/", onClick }) {
             </span>
             <span
                 aria-hidden
-                className={
+                className={`${
                     large
-                        ? "absolute right-0 top-1 size-[9px] rounded-full bg-accent"
-                        : "absolute left-[43px] top-[3px] size-[6px] rounded-full bg-accent md:left-[52px] md:top-1 md:size-[7px]"
-                }
+                        ? "absolute right-0 top-1 size-[9px]"
+                        : "absolute left-[43px] top-[3px] size-[6px] md:left-[52px] md:top-1 md:size-[7px]"
+                } rounded-full bg-accent transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.6]`}
             />
         </Link>
     );

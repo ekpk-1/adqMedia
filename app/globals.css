@@ -119,6 +119,15 @@
         outline: 2px solid var(--red-bright);
         outline-offset: 3px;
     }
+
+    button:not(:disabled),
+    [role="button"],
+    [role="radio"],
+    label[for],
+    select,
+    summary {
+        cursor: pointer;
+    }
 }
 
 @utility label {
@@ -248,8 +257,45 @@
     }
 }
 
-/* Links and small controls in the chrome get corners instead of a focus ring. */
+/*
+ * Links and small controls in the chrome: an underline that wipes in from the
+ * left on hover and out to the right, and plus/close icons that turn.
+ */
 @utility chrome-link {
+    cursor: pointer;
+
+    &:not(.absolute):not(.fixed) {
+        position: relative;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: -3px;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 450ms cubic-bezier(0.7, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    & .icon-turn {
+        transition: rotate 450ms cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    @media (hover: hover) {
+        &:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        &:hover .icon-turn {
+            rotate: 90deg;
+        }
+    }
+
     &:focus-visible {
         outline: none;
         text-decoration: underline;
