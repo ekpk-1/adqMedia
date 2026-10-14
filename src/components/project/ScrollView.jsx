@@ -1,58 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AutoVideo } from "@/components/media/AutoVideo";
 import { Photo } from "@/components/media/Photo";
 import { PlusIcon } from "@/components/chrome/SiteHeader";
-import { useCanAutoplay } from "@/hooks/useMediaPreferences";
+import { useCanAutoplay, useReducedMotion } from "@/hooks/useMediaPreferences";
 import { useVideoClock } from "@/hooks/useVideoClock";
 import { formatDuration } from "@/lib/projects";
 import { ProgressLine, useVideoControls } from "./VideoSlot";
 
 const pad = (n) => String(n).padStart(2, "0");
 
-/** Each item fills the screen and snaps to the next. */
+/** Each item fills the screen; wheel, keys and swipes step one item up or down. */
 export function ScrollView({ project, onOpenInfo }) {
-    const containerRef = useRef(null);
-    const slideRefs = useRef([]);
+    const stageRef = useRef(null);
     const [active, setActive] = useState(0);
     const items = project.items;
+    const reduced = useReducedMotion();
 
-    useEffect(() => {
-        const container = containerRef.current;
-        container?.focus({ preventScroll: true });
-        const observer = new IntersectionObserver(
-            (entries) => {
-                for (const entry of entries) {
-                    if (entry.isIntersecting) setActive(Number(entry.target.dataset.index));
-                }
-            },
-            { root: container, threshold: 0.6 }
-        );
-        slideRefs.current.forEach((slide) => slide && observer.observe(slide));
-        return () => observer.disconnect();
-    }, [items]);
-
-    const goTo = (index) => {
-        slideRefs.current[index]?.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
+    const goTo = useCallback(
+        (index) => setActive(Math.min(Math.max(index, 0), items.length - 1)),
+        [items.length]
+    );
+    useStepInput(stageRef, (direction) => setActive((current) => Math.min(Math.max(current + direction, 0), items.length - 1)));
 
     return (
         <div
-            ref={containerRef}
+            ref={stageRef}
             tabIndex={-1}
+            role="region"
+            aria-roledescription="carousel"
             aria-label={`${project.title}, ${items.length} items`}
-            className="fixed inset-0 snap-y snap-mandatory overflow-y-auto overscroll-contain outline-none [scrollbar-width:none]"
+            className="fixed inset-0 touch-none overflow-hidden outline-none"
         >
             {items.map((media, index) => (
                 <section
                     key={media.id}
-                    ref={(node) => {
-                        slideRefs.current[index] = node;
-                    }}
-                    data-index={index}
+                    aria-roledescription="slide"
                     aria-label={`${pad(index + 1)} of ${pad(items.length)}`}
-                    className="relative h-svh snap-start snap-always"
+                    aria-hidden={index !== active || undefined}
+                    inert={index !== active}
+                    className={`absolute inset-0 will-change-transform ${reduced ? "" : "transition-transform duration-700 ease-[cubic-bezier(0.7,0,0.2,1)]"}`}
+                    style={{ transform: `translateY(${(index - active) * 100}%)` }}
                 >
                     <ScrollSlide
                         media={media}
@@ -72,6 +61,91 @@ export function ScrollView({ project, onOpenInfo }) {
     );
 }
 
+const WHEEL_THRESHOLD = 40;
+const STEP_LOCK_MS = 700;
+const WHEEL_IDLE_MS = 160;
+const SWIPE_THRESHOLD = 50;
+
+/**
+ * Turns wheel, keyboard and touch input on `ref` into single steps (+1 / -1).
+ * A step locks input until the transition ends and the wheel has gone quiet,
+ * so one trackpad flick, including its inertia tail, moves exactly one item.
+ */
+function useStepInput(ref, onStep) {
+    const stepRef = useRef(onStep);
+    useEffect(() => {
+        stepRef.current = onStep;
+    });
+
+    useEffect(() => {
+        const node = ref.current;
+        if (!node) return undefined;
+        node.focus({ preventScroll: true });
+
+        let accumulated = 0;
+        let lockedUntil = 0;
+        let wheelBusy = false;
+        let idleTimer = 0;
+        let touchStart = null;
+
+        const step = (direction) => {
+            lockedUntil = performance.now() + STEP_LOCK_MS;
+            accumulated = 0;
+            stepRef.current(direction);
+        };
+
+        const onWheel = (event) => {
+            event.preventDefault();
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
+                wheelBusy = false;
+                accumulated = 0;
+            }, WHEEL_IDLE_MS);
+            if (wheelBusy || performance.now() < lockedUntil) {
+                wheelBusy = true;
+                return;
+            }
+            accumulated += event.deltaY;
+            if (Math.abs(accumulated) >= WHEEL_THRESHOLD) {
+                wheelBusy = true;
+                step(Math.sign(accumulated));
+            }
+        };
+
+        const onKey = (event) => {
+            if (event.target.closest?.("input, textarea, [role=dialog]")) return;
+            if (event.key === " " && event.target.closest?.("button, a")) return;
+            const forward = ["ArrowDown", "PageDown", " "].includes(event.key);
+            const back = ["ArrowUp", "PageUp"].includes(event.key);
+            if (!forward && !back) return;
+            event.preventDefault();
+            if (performance.now() >= lockedUntil - STEP_LOCK_MS / 2) step(forward ? 1 : -1);
+        };
+
+        const onTouchStart = (event) => {
+            touchStart = event.touches[0].clientY;
+        };
+        const onTouchEnd = (event) => {
+            if (touchStart === null) return;
+            const delta = touchStart - event.changedTouches[0].clientY;
+            touchStart = null;
+            if (Math.abs(delta) >= SWIPE_THRESHOLD && performance.now() >= lockedUntil) step(Math.sign(delta));
+        };
+
+        node.addEventListener("wheel", onWheel, { passive: false });
+        window.addEventListener("keydown", onKey);
+        node.addEventListener("touchstart", onTouchStart, { passive: true });
+        node.addEventListener("touchend", onTouchEnd, { passive: true });
+        return () => {
+            clearTimeout(idleTimer);
+            node.removeEventListener("wheel", onWheel);
+            window.removeEventListener("keydown", onKey);
+            node.removeEventListener("touchstart", onTouchStart);
+            node.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [ref]);
+}
+
 function frameStyle(media) {
     const ratio = media.width / media.height;
     const tall = ratio < 1;
@@ -88,7 +162,7 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
     const isVideo = media.type === "video";
     const videoRef = useRef(null);
     const canAutoplay = useCanAutoplay();
-    const controls = useVideoControls(videoRef);
+    const controls = useVideoControls(videoRef, media);
     const clock = useVideoClock(videoRef, media.duration);
     const ratio = clock.duration ? clock.current / clock.duration : 0;
     const counter = `${pad(index + 1)} / ${pad(total)}`;
@@ -113,6 +187,15 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
                 style={frameStyle(media)}
             >
                 {mediaNode}
+                {isVideo ? (
+                    <button
+                        type="button"
+                        onClick={controls.expand}
+                        aria-haspopup="dialog"
+                        aria-label={`Play ${media.alt}`}
+                        className="absolute inset-0 cursor-zoom-in outline-none"
+                    />
+                ) : null}
                 {isVideo ? <ProgressLine ratio={ratio} className="absolute inset-x-0 bottom-0 h-[3px] max-md:hidden" /> : null}
             </div>
 
@@ -135,6 +218,9 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
                             </button>
                             <button type="button" onClick={controls.togglePause} className="chrome-link label leading-[14px] text-text max-md:hidden">
                                 {controls.paused ? "Play" : "Pause"}
+                            </button>
+                            <button type="button" onClick={controls.expand} aria-haspopup="dialog" className="chrome-link label leading-[14px] text-text max-md:hidden">
+                                Expand
                             </button>
                         </>
                     ) : null}
@@ -165,7 +251,7 @@ function ScrollSlide({ media, index, total, project, isActive, next, onNext, onO
                             aria-label={`Next item, ${pad(index + 2)} of ${pad(total)}`}
                             className="chrome-link label leading-[14px] text-text"
                         >
-                            Scroll or ↓
+                            Next ↓
                         </button>
                     </>
                 ) : (

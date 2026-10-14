@@ -36,7 +36,6 @@ export function ProjectView({ project, neighbours, footer }) {
     return (
         <main className={view === "scroll" ? "h-svh overflow-hidden" : "relative"}>
             <SiteHeader
-                position={view === "scroll" ? "fixed" : "absolute"}
                 className={view === "scroll" ? "tone-dark-mobile" : ""}
                 center={<ViewToggle view={view} onChange={changeView} />}
                 centerOnMobile

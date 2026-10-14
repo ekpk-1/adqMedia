@@ -2,6 +2,7 @@
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { useInView } from "@/hooks/useInView";
+import { DEFAULT_VOLUME } from "@/lib/media";
 
 /**
  * Muted, looping video that only loads and plays while on screen and while
@@ -37,7 +38,10 @@ export const AutoVideo = forwardRef(function AutoVideo(
     }, [shouldPlay, started]);
 
     useEffect(() => {
-        if (videoRef.current) videoRef.current.muted = muted;
+        const video = videoRef.current;
+        if (!video) return;
+        video.volume = DEFAULT_VOLUME;
+        video.muted = muted;
     }, [muted]);
 
     const fit = contain ? "object-contain" : "object-cover";

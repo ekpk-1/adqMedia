@@ -2,19 +2,23 @@
 
 import { useRef, useState } from "react";
 import { AutoVideo } from "@/components/media/AutoVideo";
+import { useVideoModal } from "@/components/providers/VideoModalProvider";
 import { useCanAutoplay } from "@/hooks/useMediaPreferences";
 import { useVideoClock } from "@/hooks/useVideoClock";
+import { DEFAULT_VOLUME } from "@/lib/media";
 import { formatDuration } from "@/lib/projects";
 
-export function useVideoControls(videoRef) {
+export function useVideoControls(videoRef, media) {
     const [muted, setMuted] = useState(true);
     const [paused, setPaused] = useState(false);
+    const modal = useVideoModal();
 
     const toggleSound = () => {
         const video = videoRef.current;
         const next = !muted;
         setMuted(next);
         if (video) {
+            video.volume = DEFAULT_VOLUME;
             video.muted = next;
             if (!next) video.play().catch(() => {});
         }
@@ -32,13 +36,12 @@ export function useVideoControls(videoRef) {
         }
     };
 
+    /** Opens the film in the modal, muted, from where the inline copy is. */
     const expand = () => {
         const video = videoRef.current;
-        if (!video) return;
-        video.muted = false;
-        setMuted(false);
-        video.play().catch(() => {});
-        (video.requestFullscreen ?? video.webkitEnterFullscreen)?.call(video)?.catch?.(() => {});
+        if (video) video.muted = true;
+        setMuted(true);
+        modal.open(media, { startAt: video?.currentTime ?? 0 });
     };
 
     return { muted, paused, toggleSound, togglePause, expand };
@@ -57,12 +60,19 @@ export function VideoSlot({ media }) {
     const videoRef = useRef(null);
     const canAutoplay = useCanAutoplay();
     const clock = useVideoClock(videoRef, media.duration);
-    const controls = useVideoControls(videoRef);
+    const controls = useVideoControls(videoRef, media);
     const ratio = clock.duration ? clock.current / clock.duration : 0;
 
     return (
         <div className="tone-dark relative size-full overflow-hidden bg-background">
             <AutoVideo ref={videoRef} media={media} active={canAutoplay && !controls.paused} muted={controls.muted} />
+            <button
+                type="button"
+                onClick={controls.expand}
+                aria-haspopup="dialog"
+                aria-label={`Play ${media.alt}`}
+                className="absolute inset-0 cursor-zoom-in outline-none"
+            />
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[180px] bg-gradient-to-b from-transparent to-[#0f0f0fbf]" />
             <div className="absolute inset-x-4 bottom-4 flex flex-col gap-[14px] md:inset-x-6 md:bottom-6">
                 <div className="flex items-center justify-between gap-3">
@@ -79,7 +89,7 @@ export function VideoSlot({ media }) {
                         <button type="button" onClick={controls.toggleSound} aria-pressed={!controls.muted} className="chrome-link label leading-[14px] text-text">
                             {controls.muted ? "Sound off" : "Sound on"}
                         </button>
-                        <button type="button" onClick={controls.expand} className="chrome-link label leading-[14px] text-text max-md:hidden">
+                        <button type="button" onClick={controls.expand} aria-haspopup="dialog" className="chrome-link label leading-[14px] text-text">
                             Expand
                         </button>
                     </span>

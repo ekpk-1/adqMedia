@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useVideoModal } from "@/components/providers/VideoModalProvider";
 import { useReducedMotion } from "@/hooks/useMediaPreferences";
 import { useVideoClock } from "@/hooks/useVideoClock";
+import { DEFAULT_VOLUME } from "@/lib/media";
 import { formatDuration } from "@/lib/projects";
 
 const LANDING_OFFSET = 140;
@@ -32,6 +34,7 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
     const [muted, setMuted] = useState(true);
     const [measured, setMeasured] = useState(false);
     const clock = useVideoClock(videoRef, reel.duration);
+    const modal = useVideoModal();
 
     // A passive effect, because the page and slot refs belong to later
     // siblings and aren't attached yet when this component's layout effects run.
@@ -118,16 +121,15 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
     }, [reduced]);
 
     useEffect(() => {
-        if (videoRef.current) videoRef.current.muted = muted;
-    }, [muted]);
-
-    const openFullscreen = () => {
         const video = videoRef.current;
         if (!video) return;
-        video.muted = false;
-        setMuted(false);
-        video.play().catch(() => {});
-        video.requestFullscreen?.().catch(() => {});
+        video.volume = DEFAULT_VOLUME;
+        video.muted = muted;
+    }, [muted]);
+
+    const openModal = () => {
+        setMuted(true);
+        modal.open(reel, { title: reel.caption, startAt: videoRef.current?.currentTime ?? 0 });
     };
 
     const progressRatio = clock.duration ? clock.current / clock.duration : 0;
@@ -177,8 +179,9 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
                 />
                 <button
                     type="button"
-                    onClick={openFullscreen}
-                    aria-label="Play the showreel full screen with sound"
+                    onClick={openModal}
+                    aria-haspopup="dialog"
+                    aria-label="Play the showreel"
                     className="tone-dark group absolute inset-0 overflow-hidden bg-background outline-none"
                 >
                     <video

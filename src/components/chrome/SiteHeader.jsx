@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useMenu } from "@/components/providers/MenuProvider";
 import { Wordmark } from "./Wordmark";
 
@@ -35,18 +36,38 @@ export function MenuButton() {
     );
 }
 
+function useScrolledPast(offset = 24) {
+    const [scrolled, setScrolled] = useState(false);
+    useEffect(() => {
+        const update = () => setScrolled(window.scrollY > offset);
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        return () => window.removeEventListener("scroll", update);
+    }, [offset]);
+    return scrolled;
+}
+
 /**
  * Wordmark left, optional centre control, actions right (the menu by default).
- * `position` is "absolute" over intros and full-screen views, "fixed" over
- * the scroll view, or "static" in normal flow.
+ * Fixed by default so it follows the page; once the page scrolls, a soft fade
+ * of the page colour sits behind it to keep it legible over content.
+ * Pass `position="static"` to keep it in normal flow.
  */
-export function SiteHeader({ center, centerOnMobile = false, actions, position = "absolute", className = "" }) {
-    const positionClass =
-        position === "fixed" ? "fixed" : position === "absolute" ? "absolute" : "relative";
+export function SiteHeader({ center, centerOnMobile = false, actions, position = "fixed", scrim = true, className = "" }) {
+    const scrolled = useScrolledPast();
+    const positionClass = position === "static" ? "relative" : position;
     return (
         <header
             className={`${positionClass} inset-x-0 top-0 z-30 flex items-center justify-between p-5 md:px-10 md:py-[28px] ${className}`}
         >
+            {scrim && position !== "static" ? (
+                <span
+                    aria-hidden
+                    className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-[140%] bg-gradient-to-b from-background via-background/80 to-transparent transition-opacity duration-300 ${
+                        scrolled ? "opacity-100" : "opacity-0"
+                    }`}
+                />
+            ) : null}
             <div className="flex w-[200px] max-md:w-auto">
                 <Wordmark />
             </div>

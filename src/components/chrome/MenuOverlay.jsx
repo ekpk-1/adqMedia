@@ -33,7 +33,8 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
         { id: "info", href: "/info", word: "Info", note: "About, services, clients" },
         { id: "contact", href: "/info#contact", word: "Contact", note: "Book a shoot" },
     ];
-    const active = hovered ?? currentSection(pathname);
+    const current = currentSection(pathname);
+    const active = hovered ?? current;
 
     return (
         <AnimatePresence>
@@ -68,13 +69,14 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
                     </div>
 
                     <nav aria-label="Main" className="relative flex flex-1 flex-col" onMouseLeave={() => setHovered(null)}>
-                        <ReelStrip reel={reel} index={active} />
+                        <ReelBackdrop reel={reel} />
                         {rows.map((row, index) => (
                             <MenuRow
                                 key={row.id}
                                 row={row}
                                 index={index}
                                 isActive={active === index}
+                                isCurrent={current === index}
                                 onHover={() => setHovered(index)}
                                 onNavigate={close}
                             />
@@ -106,40 +108,53 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
     );
 }
 
-function MenuRow({ row, index, isActive, onHover, onNavigate }) {
+function MenuRow({ row, index, isActive, isCurrent, onHover, onNavigate }) {
     return (
         <Link
             href={row.href}
             onClick={onNavigate}
             onMouseEnter={onHover}
             onFocus={onHover}
-            aria-current={isActive ? "true" : undefined}
-            className={`group relative z-10 flex min-h-[100px] flex-1 overflow-hidden border-b outline-none ${
-                isActive ? "tone-dark border-b-2 border-accent" : "border-line"
+            aria-current={isCurrent ? "page" : undefined}
+            className={`group relative z-10 flex min-h-[100px] flex-1 overflow-hidden border-b outline-none transition-colors duration-500 ${
+                isActive ? "border-accent" : "border-line"
             }`}
         >
-            <span className="label-plain absolute left-5 top-4 text-text md:left-10 md:top-5">
-                {String(index + 1).padStart(2, "0")}
-            </span>
-            <motion.span
-                initial={{ y: "40%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.05 + index * 0.06, duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-                className={`absolute left-14 top-1/2 -translate-y-1/2 font-display uppercase leading-[0.84] transition-opacity md:left-[112px] ${
-                    isActive ? "opacity-100" : "opacity-100 [:root:not(.theme-light)_&]:opacity-[0.32]"
-                }`}
-                style={{ fontSize: "clamp(84px, min(24vh, 16.6vw), 240px)" }}
-            >
-                {row.word}
-            </motion.span>
-            <span className="label absolute bottom-4 right-5 text-text max-md:hidden md:bottom-5 md:right-10">
-                {row.note}
+            {/* The row's own background. Activating it peels away left to right to show the reel underneath. */}
+            <span
+                aria-hidden
+                className="absolute inset-0 bg-background transition-[clip-path] duration-700 ease-[cubic-bezier(0.7,0,0.2,1)] motion-reduce:transition-none"
+                style={{ clipPath: isActive ? "inset(0 0 0 100%)" : "inset(0 0 0 0)" }}
+            />
+            <span className={`contents ${isActive ? "tone-dark" : ""}`}>
+                <span className="label-plain absolute left-5 top-4 text-text transition-colors duration-500 md:left-10 md:top-5">
+                    {String(index + 1).padStart(2, "0")}
+                </span>
+                <motion.span
+                    initial={{ y: "40%", opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.05 + index * 0.06, duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+                    className="absolute left-14 top-1/2 -translate-y-1/2 font-display uppercase leading-[0.84] md:left-[112px]"
+                    style={{ fontSize: "clamp(84px, min(24vh, 16.6vw), 240px)" }}
+                >
+                    <span
+                        className={`text-text transition-[color,opacity] duration-500 ${
+                            isActive ? "opacity-100" : "[:root:not(.theme-light)_&]:opacity-[0.32]"
+                        }`}
+                    >
+                        {row.word}
+                    </span>
+                </motion.span>
+                <span className="label absolute bottom-4 right-5 text-text transition-colors duration-500 max-md:hidden md:bottom-5 md:right-10">
+                    {row.note}
+                </span>
             </span>
         </Link>
     );
 }
 
-function ReelStrip({ reel, index }) {
+/** One reel filling the whole nav, sitting under every row's background. */
+function ReelBackdrop({ reel }) {
     const canPlay = useCanAutoplay();
     const videoRef = useRef(null);
 
@@ -151,11 +166,7 @@ function ReelStrip({ reel, index }) {
     }, [canPlay]);
 
     return (
-        <div
-            aria-hidden
-            className="tone-dark pointer-events-none absolute inset-x-0 overflow-hidden bg-background transition-[top] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
-            style={{ top: `${(index * 100) / 3}%`, height: `${100 / 3}%` }}
-        >
+        <div aria-hidden className="tone-dark pointer-events-none absolute inset-0 overflow-hidden bg-background">
             {canPlay ? (
                 <video
                     ref={videoRef}

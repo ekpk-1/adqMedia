@@ -1,7 +1,9 @@
 import localFont from "next/font/local";
 import { Bebas_Neue } from "next/font/google";
 import { MenuOverlay } from "@/components/chrome/MenuOverlay";
+import { ScreenCorners } from "@/components/chrome/ScreenCorners";
 import { MenuProvider } from "@/components/providers/MenuProvider";
+import { VideoModalProvider } from "@/components/providers/VideoModalProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { getProjects, getSiteSettings } from "@/content/repository";
 import { bootScript } from "@/lib/theme";
@@ -44,13 +46,16 @@ export default function RootLayout({ children }) {
             <body>
                 <ThemeProvider>
                     <MenuProvider>
-                        {children}
-                        <MenuOverlay
-                            projectCount={getProjects().length}
-                            email={settings.email}
-                            socials={settings.socials}
-                            reel={settings.showreel}
-                        />
+                        <VideoModalProvider>
+                            {children}
+                            <ScreenCorners />
+                            <MenuOverlay
+                                projectCount={getProjects().length}
+                                email={settings.email}
+                                socials={settings.socials}
+                                reel={settings.showreel}
+                            />
+                        </VideoModalProvider>
                     </MenuProvider>
                 </ThemeProvider>
             </body>
