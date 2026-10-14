@@ -75,9 +75,12 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
                                     href={social.url}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="chrome-link label text-text"
+                                    className="arrow-link label text-text"
                                 >
-                                    {social.label} ↗
+                                    {social.label}
+                                    <span aria-hidden className="arrow-link-icon">
+                                        ↗
+                                    </span>
                                 </a>
                             ))}
                         </div>

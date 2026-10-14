@@ -305,6 +305,41 @@
     }
 }
 
+/* Outbound links: the ↗ turns to → and eases away from the label instead of underlining. */
+@utility arrow-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    cursor: pointer;
+
+    & .arrow-link-icon {
+        display: inline-block;
+        transition:
+            rotate 450ms cubic-bezier(0.7, 0, 0.2, 1),
+            translate 450ms cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    @media (hover: hover) {
+        &:hover .arrow-link-icon {
+            rotate: 45deg;
+            translate: 4px 0;
+        }
+    }
+
+    &:focus-visible {
+        outline: none;
+        text-decoration: underline;
+        text-decoration-color: var(--red-bright);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 6px;
+    }
+
+    &:focus-visible .arrow-link-icon {
+        rotate: 45deg;
+        translate: 4px 0;
+    }
+}
+
 @keyframes marquee-left {
     to {
         transform: translateX(-50%);
