@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "media:manifest": "node scripts/build-media-manifest.mjs",
+    "media:previews": "node scripts/encode-video-previews.mjs",
     "content:migrate": "node scripts/migrate-to-sanity.mjs"
   },
   "dependencies": {

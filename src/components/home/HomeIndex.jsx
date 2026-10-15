@@ -46,35 +46,37 @@ function HomeIndex({ projects, reel, footer, controls }) {
             <SiteHeader center={filterToggle} />
             <ReelIntro reel={reel} pageRef={pageRef} slotRef={slotRef} />
 
-            <div
-                className="flex flex-col gap-5 px-5 pb-[28px] pt-10 md:flex-row md:items-end md:justify-between md:px-10 md:pb-10 md:pt-24"
-                style={{ opacity: "clamp(0, (var(--p, 1) - 0.7) * 3.4, 1)" }}
-            >
-                <div className="flex flex-col gap-2.5 md:gap-3">
-                    <span className="label text-text-muted">
-                        Index — {visible.length} {visible.length === 1 ? "project" : "projects"}
-                    </span>
-                    <h2 className="text-heading font-medium tracking-[-0.015em] text-text md:text-title">Selected work</h2>
+            <div className="mx-auto w-full max-w-[1600px]">
+                <div
+                    className="flex flex-col gap-5 px-5 pb-[28px] pt-10 md:flex-row md:items-end md:justify-between md:px-10 md:pb-10 md:pt-24"
+                    style={{ opacity: "clamp(0, (var(--p, 1) - 0.7) * 3.4, 1)" }}
+                >
+                    <div className="flex flex-col gap-2.5 md:gap-3">
+                        <span className="label text-text-muted">
+                            Index — {visible.length} {visible.length === 1 ? "project" : "projects"}
+                        </span>
+                        <h2 className="text-heading font-medium tracking-[-0.015em] text-text md:text-title">Selected work</h2>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-line pt-4 md:border-0 md:pb-2 md:pt-0">
+                        <div className="md:hidden">
+                            <FilterToggle filter={filter} onChange={setFilter} size="sm" />
+                        </div>
+                        <div className="max-md:hidden">
+                            <ViewSwitch view={view} onChange={setView} />
+                        </div>
+                        <div className="md:hidden">
+                            <ViewSwitch view={view} onChange={setView} size="sm" />
+                        </div>
+                    </div>
                 </div>
-                <div className="flex items-center justify-between border-t border-line pt-4 md:border-0 md:pb-2 md:pt-0">
-                    <div className="md:hidden">
-                        <FilterToggle filter={filter} onChange={setFilter} size="sm" />
-                    </div>
-                    <div className="max-md:hidden">
-                        <ViewSwitch view={view} onChange={setView} />
-                    </div>
-                    <div className="md:hidden">
-                        <ViewSwitch view={view} onChange={setView} size="sm" />
-                    </div>
-                </div>
-            </div>
 
-            <ProjectGrid
-                projects={visible}
-                reel={reel}
-                reelSlotRef={slotRef}
-                reelMeta={`Film · ${formatDuration(reel.duration)}`}
-            />
+                <ProjectGrid
+                    projects={visible}
+                    reel={reel}
+                    reelSlotRef={slotRef}
+                    reelMeta={`Film · ${formatDuration(reel.duration)}`}
+                />
+            </div>
             {footer}
         </main>
     );

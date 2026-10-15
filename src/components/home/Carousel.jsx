@@ -161,7 +161,7 @@ function Slide({ project, offset, onSelect }) {
     const media = (
         <div className="absolute inset-0 overflow-hidden bg-surface">
             {showVideo ? (
-                <AutoVideo ref={videoRef} media={project.coverVideo} active={isActive} fallback={project.cover ? cover : null} />
+                <AutoVideo ref={videoRef} media={project.coverVideo} active={isActive} preview fallback={project.cover ? cover : null} />
             ) : (
                 cover
             )}

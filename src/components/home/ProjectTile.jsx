@@ -26,9 +26,9 @@ export function tileClasses(desktopShape, mobileShape) {
 }
 
 const SIZES = {
-    wide: "(max-width: 767px) 100vw, 63vw",
-    narrow: "(max-width: 767px) 50vw, 31vw",
-    third: "(max-width: 767px) 50vw, 31vw",
+    wide: "(max-width: 767px) 100vw, (min-width: 1600px) 1000px, 63vw",
+    narrow: "(max-width: 767px) 50vw, (min-width: 1600px) 480px, 31vw",
+    third: "(max-width: 767px) 50vw, (min-width: 1600px) 480px, 31vw",
 };
 
 export function metaLabel(project) {
@@ -78,7 +78,7 @@ export function ProjectTile({ project, number, desktopShape, mobileShape }) {
         >
             <div className={`${classes.media} relative w-full overflow-hidden bg-surface`}>
                 <div className="absolute inset-0">
-                    {showVideo ? <AutoVideo media={project.coverVideo} fallback={project.cover ? cover : null} /> : cover}
+                    {showVideo ? <AutoVideo media={project.coverVideo} preview fallback={project.cover ? cover : null} /> : cover}
                 </div>
                 <div
                     aria-hidden

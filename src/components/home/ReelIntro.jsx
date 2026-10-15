@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useVideoModal } from "@/components/providers/VideoModalProvider";
+import { useInView } from "@/hooks/useInView";
 import { useReducedMotion } from "@/hooks/useMediaPreferences";
 import { useVideoClock } from "@/hooks/useVideoClock";
 import { DEFAULT_VOLUME } from "@/lib/media";
@@ -31,6 +32,8 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
     const layerRef = useRef(null);
     const videoRef = useRef(null);
     const reduced = useReducedMotion();
+    const inView = useInView(layerRef, { threshold: 0 });
+    const playing = !reduced && inView;
     const [muted, setMuted] = useState(true);
     const [measured, setMeasured] = useState(false);
     const clock = useVideoClock(videoRef, reel.duration);
@@ -116,9 +119,9 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
-        if (reduced) video.pause();
-        else video.play().catch(() => {});
-    }, [reduced]);
+        if (playing) video.play().catch(() => {});
+        else video.pause();
+    }, [playing]);
 
     useEffect(() => {
         const video = videoRef.current;

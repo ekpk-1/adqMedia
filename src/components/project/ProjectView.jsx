@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { MenuButton, PlusIcon, SiteHeader } from "@/components/chrome/SiteHeader";
 import { useProjectView } from "@/hooks/useProjectView";
 import { scrollToTop } from "@/lib/smoothScroll";
@@ -14,6 +14,12 @@ export function ProjectView({ project, neighbours, footer }) {
     const [infoOpen, setInfoOpen] = useState(false);
     const openInfo = useCallback(() => setInfoOpen(true), []);
     const closeInfo = useCallback(() => setInfoOpen(false), []);
+
+    useLayoutEffect(() => {
+        scrollToTop();
+        const frame = requestAnimationFrame(() => scrollToTop());
+        return () => cancelAnimationFrame(frame);
+    }, [project.slug]);
 
     const changeView = (next) => {
         setView(next);
@@ -42,7 +48,7 @@ export function ProjectView({ project, neighbours, footer }) {
                 actions={actions}
             />
             {view === "scroll" ? (
-                <ScrollView project={project} onOpenInfo={openInfo} />
+                <ScrollView key={project.slug} project={project} onOpenInfo={openInfo} />
             ) : (
                 <LayoutView project={project} neighbours={neighbours} onOpenInfo={openInfo} footer={footer} />
             )}
