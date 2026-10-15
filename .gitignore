@@ -19,6 +19,10 @@ next-env.d.ts
 .sanity
 scripts/.sanity-migrate-cache.json
 
+# Notes and reference images stay on this machine.
+/docs/
+/design/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
