@@ -10,7 +10,6 @@ import { useCanAutoplay, useReducedMotion } from "@/hooks/useMediaPreferences";
 import { revealPolygon } from "@/lib/revealPolygon";
 import { CloseIcon } from "./SiteHeader";
 import { MelbourneClock } from "./MelbourneClock";
-import { ThemeToggle } from "./ThemeToggle";
 import { Wordmark } from "./Wordmark";
 
 function currentSection(pathname) {
@@ -84,7 +83,6 @@ export function MenuOverlay({ projectCount, email, socials, reel }) {
                                 </a>
                             ))}
                         </div>
-                        <ThemeToggle />
                     </div>
                 </motion.div>
             ) : null}
@@ -176,7 +174,7 @@ function MenuRow({ row, index, isActive, isCurrent, onHover, onNavigate }) {
                 >
                     <span
                         className={`text-text transition-[color,opacity] duration-500 ${
-                            isActive ? "opacity-100" : "[:root:not(.theme-light)_&]:opacity-[0.32]"
+                            isActive ? "opacity-100" : "opacity-[0.32]"
                         }`}
                     >
                         {row.word}
@@ -207,7 +205,7 @@ function ReelBackdrop({ reel, clipPath }) {
             {canPlay ? (
                 <video
                     ref={videoRef}
-                    src={reel.src}
+                    src={canPlay ? reel.src : undefined}
                     poster={reel.poster.src}
                     muted
                     loop

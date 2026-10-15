@@ -6,13 +6,13 @@ import { getNeighbours } from "@/lib/projects";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-    return getProjects().map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+    return (await getProjects()).map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }) {
     const { slug } = await params;
-    const project = getProject(slug);
+    const project = await getProject(slug);
     if (!project) return {};
     const description =
         project.info?.lead ??
@@ -31,10 +31,10 @@ export async function generateMetadata({ params }) {
 
 export default async function ProjectPage({ params }) {
     const { slug } = await params;
-    const project = getProject(slug);
+    const project = await getProject(slug);
     if (!project) notFound();
-    const settings = getSiteSettings();
-    const neighbours = getNeighbours(getProjectSummaries(), slug);
+    const settings = await getSiteSettings();
+    const neighbours = getNeighbours(await getProjectSummaries(), slug);
 
     return (
         <ProjectView

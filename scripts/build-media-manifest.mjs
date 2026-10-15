@@ -1,6 +1,6 @@
 // Records dimensions and durations for everything under public/ so the local
-// content repository can size slots without loading media. Sanity and Mux
-// return the same metadata, so this script goes away after the migration.
+// content repository can size slots without loading media. Films stay in
+// public/, so this manifest stays the source for their width, height and duration.
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { imageSize } from "image-size";

@@ -5,7 +5,6 @@ import { ScreenCorners } from "@/components/chrome/ScreenCorners";
 import { MenuProvider } from "@/components/providers/MenuProvider";
 import { VideoModalProvider } from "@/components/providers/VideoModalProvider";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { getProjects, getSiteSettings } from "@/content/repository";
 import { bootScript } from "@/lib/theme";
 import "lenis/dist/lenis.css";
@@ -32,14 +31,11 @@ export const metadata = {
 };
 
 export const viewport = {
-    themeColor: [
-        { media: "(prefers-color-scheme: dark)", color: "#0f0f0f" },
-        { media: "(prefers-color-scheme: light)", color: "#ebebeb" },
-    ],
+    themeColor: "#0f0f0f",
 };
 
-export default function RootLayout({ children }) {
-    const settings = getSiteSettings();
+export default async function RootLayout({ children }) {
+    const settings = await getSiteSettings();
     return (
         <html lang="en-AU" className={`${satoshi.variable} ${bebas.variable}`} suppressHydrationWarning>
             <head>
@@ -47,20 +43,18 @@ export default function RootLayout({ children }) {
             </head>
             <body>
                 <SmoothScroll />
-                <ThemeProvider>
-                    <MenuProvider>
-                        <VideoModalProvider>
-                            {children}
-                            <ScreenCorners />
-                            <MenuOverlay
-                                projectCount={getProjects().length}
-                                email={settings.email}
-                                socials={settings.socials}
-                                reel={settings.showreel}
-                            />
-                        </VideoModalProvider>
-                    </MenuProvider>
-                </ThemeProvider>
+                <MenuProvider>
+                    <VideoModalProvider>
+                        {children}
+                        <ScreenCorners />
+                        <MenuOverlay
+                                projectCount={(await getProjects()).length}
+                            email={settings.email}
+                            socials={settings.socials}
+                            reel={settings.showreel}
+                        />
+                    </VideoModalProvider>
+                </MenuProvider>
             </body>
         </html>
     );

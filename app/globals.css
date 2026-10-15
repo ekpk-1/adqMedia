@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Raw tokens from the Paper "ADQ Media — Design System" file. */
+/* Tokens from the Paper design system. The site is dark only. */
 :root {
     --dark-background: #0f0f0f;
     --dark-surface: #1a1a1a;
@@ -9,25 +9,6 @@
     --dark-line: #ffffff4d;
     --dark-scrim: #0f0f0fb8;
 
-    --light-background: #ebebeb;
-    --light-surface: #ffffff;
-    --light-text: #0f0f0f;
-    --light-text-muted: #676767;
-    --light-line: #00000033;
-    --light-scrim: #ffffffcc;
-
-    --red: #bf1e2e;
-    --red-bright: #d93241;
-}
-
-/*
- * Semantic tokens. Dark is the default; the theme script adds .theme-light to
- * <html> before first paint. .tone-dark pins footage surfaces to dark, and
- * .tone-invert flips to the opposite of the active theme.
- */
-:root,
-.tone-dark,
-:root.theme-light .tone-invert {
     --bg: var(--dark-background);
     --surface: var(--dark-surface);
     --fg: var(--dark-text);
@@ -35,33 +16,13 @@
     --line: var(--dark-line);
     --scrim: var(--dark-scrim);
     color-scheme: dark;
+
+    --red: #bf1e2e;
+    --red-bright: #d93241;
 }
 
-:root.theme-light,
-.tone-light,
-:root:not(.theme-light) .tone-invert {
-    --bg: var(--light-background);
-    --surface: var(--light-surface);
-    --fg: var(--light-text);
-    --fg-muted: var(--light-text-muted);
-    --line: var(--light-line);
-    --scrim: var(--light-scrim);
-    color-scheme: light;
-}
-
-@media (max-width: 767px) {
-    :root .tone-dark-mobile {
-        --bg: var(--dark-background);
-        --fg: var(--dark-text);
-        --fg-muted: var(--dark-text-muted);
-        --line: var(--dark-line);
-        color: var(--fg);
-    }
-}
-
-.tone-dark,
-.tone-light,
-.tone-invert {
+/* Footage surfaces stay on the same dark tokens as the page. */
+.tone-dark {
     color: var(--fg);
 }
 

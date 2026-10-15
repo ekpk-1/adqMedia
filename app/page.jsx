@@ -3,10 +3,10 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { RoutedHomeIndex, StaticHomeIndex } from "@/components/home/HomeIndex";
 import { getProjectSummaries, getSiteSettings } from "@/content/repository";
 
-export default function HomePage() {
-    const settings = getSiteSettings();
+export default async function HomePage() {
+    const settings = await getSiteSettings();
     const props = {
-        projects: getProjectSummaries(),
+        projects: await getProjectSummaries(),
         reel: settings.showreel,
         footer: <SiteFooter email={settings.email} socials={settings.socials} />,
     };

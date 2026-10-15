@@ -4,6 +4,8 @@ import { ClientMarquee } from "./ClientMarquee";
 import { ContactForm } from "./ContactForm";
 
 const TITLE = "text-[40px] font-medium leading-[44px] tracking-[-0.03em] md:text-title";
+/** Label lane. 30% until the 460px editorial column fits, and it never forces the copy beside it off the screen. */
+const LANE = "md:w-[30%] md:shrink-0 xl:w-[460px]";
 
 export function InfoHero({ statement, facts }) {
     return (
@@ -14,7 +16,7 @@ export function InfoHero({ statement, facts }) {
             </h1>
             <dl className="grid grid-cols-2 gap-x-5 gap-y-7 border-t border-line pt-5 md:flex md:gap-0">
                 {facts.map((fact) => (
-                    <div key={fact.label} className="flex flex-col-reverse justify-end gap-1.5 md:w-[340px] md:last:w-auto">
+                    <div key={fact.label} className="flex min-w-0 flex-col-reverse justify-end gap-1.5 md:flex-1">
                         <dt className="label text-text-muted">{fact.label}</dt>
                         <dd className="text-[26px] font-medium leading-8 tracking-[-0.02em] md:text-heading">{fact.value}</dd>
                     </div>
@@ -35,7 +37,7 @@ export function InfoStill({ still }) {
 
 function SectionLabel({ number, label, accent = false }) {
     return (
-        <div className="label flex gap-6 md:w-[30%] xl:w-[460px] md:shrink-0">
+        <div className={`label flex gap-6 ${LANE}`}>
             <span className={accent ? "text-accent" : "text-text-muted"}>{number}</span>
             <span className="text-text">{label}</span>
         </div>
@@ -46,11 +48,11 @@ export function AboutSection({ lead, body }) {
     return (
         <section id="about" className="flex flex-col gap-8 px-5 py-20 md:flex-row md:gap-0 md:px-10 md:py-[144px]">
             <SectionLabel number="01" label="About" />
-            <div className="flex max-w-[900px] flex-1 flex-col gap-10 md:gap-14">
+            <div className="flex min-w-0 flex-1 flex-col gap-10 md:gap-14">
                 <p className="text-[26px] font-medium leading-[34px] tracking-[-0.02em] md:text-[36px] md:leading-[44px]">{lead}</p>
-                <div className="flex flex-col gap-6 md:flex-row md:gap-10">
+                <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
                     {body.map((paragraph) => (
-                        <p key={paragraph.slice(0, 24)} className="text-body md:w-[430px] md:leading-[26px]">
+                        <p key={paragraph.slice(0, 24)} className="min-w-0 text-body lg:flex-1 lg:leading-[26px]">
                             {paragraph}
                         </p>
                     ))}
@@ -69,12 +71,12 @@ export function ServicesSection({ services }) {
             </div>
             {services.map((service) => (
                 <article key={service.id} className="flex flex-col gap-6 border-t border-line pb-12 pt-8 last:border-b md:flex-row md:gap-0 md:pb-14">
-                    <div className="flex flex-col gap-2 md:w-[30%] xl:w-[460px] md:shrink-0">
+                    <div className={`flex flex-col gap-2 ${LANE}`}>
                         <span className="label text-text-muted">{service.audience}</span>
                         <h3 className="text-[28px] font-medium leading-9 tracking-[-0.02em] md:text-heading">{service.title}</h3>
                     </div>
-                    <div className="flex max-w-[900px] flex-1 flex-col gap-8 lg:flex-row lg:gap-10">
-                        <div className="flex flex-col gap-8 lg:w-[430px] lg:shrink-0">
+                    <div className="flex min-w-0 flex-1 flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
+                        <div className="flex min-w-0 flex-col gap-8 lg:flex-1">
                             <p className="text-body md:leading-[26px]">{service.pitch}</p>
                             <dl className="flex flex-col border-t border-line">
                                 {[
@@ -89,8 +91,8 @@ export function ServicesSection({ services }) {
                             </dl>
                         </div>
                         {service.image ? (
-                            <div className="relative aspect-[430/320] w-full overflow-hidden bg-surface lg:w-[430px] lg:shrink">
-                                <Photo media={service.image} sizes="(max-width: 1023px) 100vw, 430px" className="absolute inset-0" />
+                            <div className="relative aspect-[430/320] w-full overflow-hidden bg-surface lg:w-auto lg:min-w-0 lg:flex-1">
+                                <Photo media={service.image} sizes="(max-width: 1023px) 100vw, 40vw" className="absolute inset-0" />
                             </div>
                         ) : null}
                     </div>
@@ -105,7 +107,7 @@ export function ClientsSection({ clients }) {
         <section id="clients" className="flex flex-col pb-20 md:pb-[144px]">
             <div className="flex flex-col gap-8 px-5 pb-10 md:flex-row md:gap-0 md:px-10 md:pb-14">
                 <SectionLabel number="03" label="Clients" />
-                <div className="flex max-w-[900px] flex-1 items-end justify-between gap-6">
+                <div className="flex min-w-0 flex-1 items-end justify-between gap-6">
                     <h2 className={TITLE}>Who we&apos;ve shot for.</h2>
                     <span className="label shrink-0 text-text-muted">{clients.length} clients</span>
                 </div>
@@ -122,7 +124,7 @@ const handleFor = (social) => {
 
 export function ContactBand({ intro, email, phone, socials, location, services, projectTitles }) {
     return (
-        <section id="contact" className="tone-invert flex flex-col gap-14 bg-background px-5 pb-8 pt-20 text-text md:gap-24 md:px-10 md:pb-14 md:pt-[144px]">
+        <section id="contact" className="flex flex-col gap-14 bg-background px-5 pb-8 pt-20 text-text md:gap-24 md:px-10 md:pb-14 md:pt-[144px]">
             <div className="flex flex-col gap-8 md:flex-row md:gap-0">
                 <SectionLabel number="04" label="Contact" accent />
                 <div className="flex flex-col gap-6">
@@ -131,7 +133,7 @@ export function ContactBand({ intro, email, phone, socials, location, services, 
                 </div>
             </div>
             <div className="flex flex-col-reverse gap-14 md:flex-row md:gap-0">
-                <div className="flex flex-col gap-5 md:w-[30%] xl:w-[460px] md:shrink-0">
+                <div className={`flex flex-col gap-5 ${LANE}`}>
                     <span className="label text-text-muted">Or directly</span>
                     <div className="flex flex-col gap-1.5 text-body">
                         <a href={`mailto:${email}`} className="chrome-link w-fit">
@@ -149,7 +151,7 @@ export function ContactBand({ intro, email, phone, socials, location, services, 
                         ))}
                     </div>
                 </div>
-                <div className="max-w-[900px] flex-1">
+                <div className="min-w-0 flex-1">
                     <ContactForm services={services} projectTitles={projectTitles} />
                 </div>
             </div>

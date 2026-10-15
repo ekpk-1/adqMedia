@@ -16,7 +16,7 @@ export default function NotFound() {
             <div className="relative mx-5 mb-5 flex flex-1 items-center justify-center overflow-hidden bg-surface md:mx-10 md:mb-10">
                 <div
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:33.333%_33.333%] [.theme-light_&]:bg-[linear-gradient(to_right,#0000001a_1px,transparent_1px),linear-gradient(to_bottom,#0000001a_1px,transparent_1px)]"
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:33.333%_33.333%]"
                 />
                 <span aria-hidden className={`${CORNER} left-4 top-4 border-l-2 border-t-2`} />
                 <span aria-hidden className={`${CORNER} right-4 top-4 border-r-2 border-t-2`} />

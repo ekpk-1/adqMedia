@@ -186,7 +186,7 @@ export function ReelIntro({ reel, pageRef, slotRef }) {
                 >
                     <video
                         ref={videoRef}
-                        src={reel.src}
+                        src={reduced ? undefined : reel.src}
                         poster={reel.poster.src}
                         muted
                         loop

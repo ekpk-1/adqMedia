@@ -17,10 +17,10 @@ export const metadata = {
     alternates: { canonical: "/info" },
 };
 
-export default function InfoPage() {
-    const settings = getSiteSettings();
+export default async function InfoPage() {
+    const settings = await getSiteSettings();
     const { info } = settings;
-    const projectTitles = Object.fromEntries(getProjectSummaries().map((project) => [project.slug, project.title]));
+    const projectTitles = Object.fromEntries((await getProjectSummaries()).map((project) => [project.slug, project.title]));
 
     return (
         <main id="top" className="relative">
@@ -29,7 +29,7 @@ export default function InfoPage() {
             <InfoStill still={info.still} />
             <AboutSection lead={info.aboutLead} body={info.aboutBody} />
             <ServicesSection services={settings.services} />
-            <ClientsSection clients={getClients()} />
+            <ClientsSection clients={await getClients()} />
             <ContactBand
                 intro={info.contactIntro}
                 email={settings.email}

@@ -248,7 +248,7 @@ function SlideDetails({ media, index, total, title, next, getVideo, onNext, onOp
 
     return (
         <>
-            <div className="tone-dark-mobile absolute inset-x-5 bottom-[30px] z-10 flex flex-col gap-3 md:inset-x-auto md:bottom-10 md:left-10 md:w-[400px] md:gap-4">
+            <div className="absolute inset-x-5 bottom-[30px] z-10 flex flex-col gap-3 md:inset-x-auto md:bottom-10 md:left-10 md:w-[400px] md:gap-4">
                 <motion.span {...swap} aria-live="polite" className="label leading-[14px] text-text-muted max-md:text-white/80">
                     {counter}
                     {filmLabel}

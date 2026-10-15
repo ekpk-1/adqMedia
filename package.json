@@ -9,14 +9,17 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "media:manifest": "node scripts/build-media-manifest.mjs"
+    "media:manifest": "node scripts/build-media-manifest.mjs",
+    "content:migrate": "node scripts/migrate-to-sanity.mjs"
   },
   "dependencies": {
     "lenis": "^1.3.26",
     "motion": "^14.2.0",
     "next": "^16.4.0",
+    "next-sanity": "^13.3.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "sanity": "^6.19.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

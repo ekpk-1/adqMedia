@@ -28,13 +28,8 @@ export const AutoVideo = forwardRef(function AutoVideo(
     useEffect(() => {
         const video = videoRef.current;
         if (!video || !started) return;
-        if (shouldPlay) {
-            video.play().catch(() => {
-                // Autoplay can be refused (e.g. low-power mode); the poster stays up.
-            });
-        } else {
-            video.pause();
-        }
+        if (shouldPlay) video.play().catch(() => {});
+        else video.pause();
     }, [shouldPlay, started]);
 
     useEffect(() => {
