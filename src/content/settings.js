@@ -37,7 +37,7 @@ export const settings = {
             title: "Pre-sale photography",
             chip: "Pre-sale photos",
             pitch: "Selling your car? A full listing set, shot so buyers see every detail before they message you.",
-            youGet: "50+ edited photos",
+            youGet: "25+ edited photos",
             where: "Your home, or a good spot nearby",
             image: "/gallery/servicePage/DSC08745.webp",
         },
