@@ -1,5 +1,7 @@
 import { defineConfig } from "sanity";
+import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
+import { previewDocuments, previewLocations } from "./cms/preview";
 import { schemaTypes } from "./cms/schema";
 import { structure } from "./cms/desk";
 
@@ -12,6 +14,12 @@ export default defineConfig({
     basePath: "/studio",
     projectId,
     dataset,
-    plugins: [structureTool({ structure })],
+    plugins: [
+        structureTool({ structure }),
+        presentationTool({
+            previewUrl: { previewMode: { enable: "/api/draft-mode/enable" } },
+            resolve: { locations: previewLocations, mainDocuments: previewDocuments },
+        }),
+    ],
     schema: { types: schemaTypes },
 });

@@ -124,8 +124,8 @@ export function mapSettings(doc) {
     };
 }
 
-export function mapContent(result) {
-    const projects = (result?.projects ?? []).map(mapProject).filter((project) => project.items.length && project.slug);
+export function mapContent(result, { includeEmpty = false } = {}) {
+    const projects = (result?.projects ?? []).map(mapProject).filter((project) => project.slug && (includeEmpty || project.items.length));
     const clients = (result?.clients ?? []).map(mapClient).filter((client) => client && client.id !== "private");
     return { projects, clients, settings: mapSettings(result?.settings) };
 }

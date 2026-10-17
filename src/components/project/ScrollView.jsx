@@ -64,18 +64,20 @@ export function ScrollView({ project, onOpenInfo }) {
             <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[120px] bg-gradient-to-b from-[#0f0f0f99] to-transparent md:hidden" />
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[260px] bg-gradient-to-b from-transparent to-[#0f0f0fd9] md:hidden" />
 
-            <SlideDetails
-                key={active}
-                media={items[active]}
-                index={active}
-                total={items.length}
-                title={project.title}
-                next={items[active + 1]}
-                getVideo={() => videosRef.current[active]}
-                onNext={() => goTo(active + 1)}
-                onOpenInfo={onOpenInfo}
-                animateIn={!reduced}
-            />
+            {items.length ? (
+                <SlideDetails
+                    key={active}
+                    media={items[active]}
+                    index={active}
+                    total={items.length}
+                    title={project.title}
+                    next={items[active + 1]}
+                    getVideo={() => videosRef.current[active]}
+                    onNext={() => goTo(active + 1)}
+                    onOpenInfo={onOpenInfo}
+                    animateIn={!reduced}
+                />
+            ) : null}
             <Filmstrip items={items} active={active} onPick={goTo} />
             <Pips count={items.length} active={active} onPick={goTo} />
         </div>

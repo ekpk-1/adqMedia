@@ -1,15 +1,25 @@
 // Pages only talk to these functions. With Sanity configured and at least one
 // project published, that is the source. Otherwise the files in this folder are.
+import { draftMode } from "next/headers";
 import { cache } from "react";
 import { fetchSanityContent, sanityConfigured } from "@/lib/sanity/content";
 import { summariseProject } from "./assemble";
 import * as local from "./local";
 
+async function draftsOpen() {
+    try {
+        return (await draftMode()).isEnabled;
+    } catch {
+        return false;
+    }
+}
+
 const loadRemote = cache(async () => {
     if (!sanityConfigured()) return null;
+    const drafts = await draftsOpen();
     try {
-        const remote = await fetchSanityContent();
-        if (!remote.projects.length) {
+        const remote = await fetchSanityContent({ drafts });
+        if (!remote.projects.length && !drafts) {
             console.warn("[content] Sanity has no projects yet. Serving the files in the repo.");
             return null;
         }

@@ -25,7 +25,7 @@ export function SmoothScroll() {
             setLenis(null);
         };
         const sync = () => {
-            if (query.matches) stop();
+            if (query.matches || window.parent !== window) stop();
             else if (!lenis) start();
         };
 

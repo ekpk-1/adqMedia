@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import { Bebas_Neue } from "next/font/google";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import { MenuOverlay } from "@/components/chrome/MenuOverlay";
 import { ScreenCorners } from "@/components/chrome/ScreenCorners";
 import { MenuProvider } from "@/components/providers/MenuProvider";
@@ -36,6 +38,7 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
     const settings = await getSiteSettings();
+    const { isEnabled: preview } = await draftMode();
     return (
         <html lang="en-AU" className={`${satoshi.variable} ${bebas.variable}`} suppressHydrationWarning>
             <head>
@@ -55,6 +58,7 @@ export default async function RootLayout({ children }) {
                         />
                     </VideoModalProvider>
                 </MenuProvider>
+                {preview ? <VisualEditing /> : null}
             </body>
         </html>
     );

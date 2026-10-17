@@ -4,7 +4,7 @@ import { ProjectView } from "@/components/project/ProjectView";
 import { getProject, getProjectSummaries, getProjects, getSiteSettings } from "@/content/repository";
 import { getNeighbours } from "@/lib/projects";
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
     return (await getProjects()).map((project) => ({ slug: project.slug }));
