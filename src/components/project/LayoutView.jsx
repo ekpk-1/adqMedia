@@ -7,9 +7,20 @@ import { VideoSlot } from "./VideoSlot";
 
 const aspect = (media) => media.width / media.height;
 
+const CONTENT_WIDTH = "mx-auto w-full max-w-[1600px]";
+// The column is 1600px with 40px of padding on each side. Gaps between slots are 16px.
+const COLUMN = 1520;
+const SLOT_GAP = 16;
+
 function rowSizes(row) {
     const total = row.slots.reduce((sum, media) => sum + aspect(media), 0);
-    return (media) => `(max-width: 767px) 100vw, ${Math.round((aspect(media) / total) * 94)}vw`;
+    const gaps = Math.max(row.slots.length - 1, 0) * SLOT_GAP;
+    return (media) => {
+        const share = aspect(media) / total;
+        const capped = Math.round(share * (COLUMN - gaps));
+        const fluid = Math.round(share * 94);
+        return `(max-width: 767px) 100vw, (min-width: 1600px) ${capped}px, ${fluid}vw`;
+    };
 }
 
 function Slot({ media, sizes, priority }) {
@@ -36,7 +47,7 @@ function TextRow({ row, project, onOpenInfo }) {
                 </button>
             </div>
             <div className="relative flex-1 overflow-hidden bg-surface" style={{ aspectRatio: `${media.width} / ${media.height}` }}>
-                <Photo media={media} sizes="(max-width: 767px) 100vw, 47vw" />
+                <Photo media={media} sizes="(max-width: 767px) 100vw, (min-width: 1600px) 752px, 47vw" />
             </div>
         </div>
     );
@@ -71,22 +82,24 @@ export function LayoutView({ project, neighbours, onOpenInfo, footer }) {
     let firstPhotoSeen = false;
     return (
         <div data-project-layout>
-            <ProjectTitleBlock project={project} />
-            <div className="flex flex-col gap-4 px-5 md:px-10">
-                {project.rows.map((row, index) => {
-                    if (row.type === "text") {
-                        return project.info?.lead ? (
-                            <TextRow key={index} row={row} project={project} onOpenInfo={onOpenInfo} />
-                        ) : (
-                            <MediaRow key={index} row={row} />
-                        );
-                    }
-                    const priority = !firstPhotoSeen && index < 2;
-                    if (row.slots.some((media) => media.type === "image")) firstPhotoSeen = true;
-                    return <MediaRow key={index} row={row} priority={priority} />;
-                })}
+            <div className={CONTENT_WIDTH}>
+                <ProjectTitleBlock project={project} />
+                <div className="flex flex-col gap-4 px-5 md:px-10">
+                    {project.rows.map((row, index) => {
+                        if (row.type === "text") {
+                            return project.info?.lead ? (
+                                <TextRow key={index} row={row} project={project} onOpenInfo={onOpenInfo} />
+                            ) : (
+                                <MediaRow key={index} row={row} />
+                            );
+                        }
+                        const priority = !firstPhotoSeen && index < 2;
+                        if (row.slots.some((media) => media.type === "image")) firstPhotoSeen = true;
+                        return <MediaRow key={index} row={row} priority={priority} />;
+                    })}
+                </div>
+                <ProjectPager neighbours={neighbours} />
             </div>
-            <ProjectPager neighbours={neighbours} />
             {footer}
         </div>
     );
@@ -132,7 +145,7 @@ export function ProjectPager({ neighbours }) {
                 {next.cover ? (
                     <div className="viewfinder vf-group relative aspect-[443/295] w-full shrink-0 [--vf-inset:12px] [--vf-size:20px] md:w-[min(443px,31vw)]">
                         <div className="absolute inset-0 overflow-hidden bg-surface">
-                            <Photo media={next.cover} sizes="(max-width: 767px) 100vw, 31vw" />
+                            <Photo media={next.cover} sizes="(max-width: 767px) 100vw, 443px" />
                         </div>
                     </div>
                 ) : null}
