@@ -1,7 +1,7 @@
-// Site settings singleton. The email and Instagram handle come from the Paper
-// designs and still need confirming with Alex before launch.
+// Site settings singleton. The Instagram handle comes from the Paper designs
+// and still needs confirming with Alex before launch.
 export const settings = {
-    email: "hello@adqmedia.com.au",
+    email: "alexdquach@gmail.com",
     phone: null,
     location: "Melbourne, AU",
     socials: [{ label: "Instagram", url: "https://www.instagram.com/adq.media" }],
