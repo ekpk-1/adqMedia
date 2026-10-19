@@ -127,7 +127,8 @@ async function main() {
     console.log(`photos done (${assets.images.length})`);
 
     const clientDocs = clients.map((clientDoc) => ({
-        _id: `client.${clientDoc.id}`,
+        // A dot in an id is a Sanity path. A path is hidden on a public dataset.
+        _id: `client-${clientDoc.id}`,
         _type: "client",
         name: clientDoc.name,
         slug: { _type: "slug", current: clientDoc.id },
@@ -139,7 +140,7 @@ async function main() {
         const plan = plans.find((item) => item.slug === doc.slug);
         if (!plan) return null;
         return {
-            _id: `project.${doc.slug}`,
+            _id: `project-${doc.slug}`,
             _type: "project",
             title: doc.title,
             slug: { _type: "slug", current: doc.slug },
@@ -147,7 +148,7 @@ async function main() {
             category: doc.category,
             location: doc.location,
             date: doc.date,
-            client: { _type: "reference", _ref: `client.${doc.client || "private"}` },
+            client: { _type: "reference", _ref: `client-${doc.client || "private"}` },
             info: doc.info,
             credits: (doc.credits ?? []).map((credit) => ({ _key: keyFor(`${credit.role}-${credit.name}`), _type: "object", ...credit })),
             cover: imageRef(cache.images[plan.cover], `${doc.title}, cover`),
@@ -210,6 +211,15 @@ async function main() {
         ...projectDocs.map((doc) => ({ createOrReplace: doc })),
         { createOrReplace: settingsDoc },
     ]);
+
+    const legacyIds = await client.fetch('*[_id in path("project.**") || _id in path("client.**")]._id');
+    if (legacyIds.length) {
+        await mutateAll(
+            client,
+            legacyIds.map((id) => ({ delete: { id } })),
+        );
+        console.log(`Removed ${legacyIds.length} old path ids.`);
+    }
 
     console.log(`Wrote ${clientDocs.length} clients, ${projectDocs.length} projects and the site settings.`);
     console.log("Films stay in public/. Leave them there. The site plays those files.");
