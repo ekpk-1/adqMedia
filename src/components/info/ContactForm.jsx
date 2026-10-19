@@ -48,7 +48,7 @@ export function ContactForm({ services, projectTitles }) {
         return (
             <div role="status" className="flex flex-col gap-4 border-t border-line pt-8">
                 <span className="label text-text-muted">Sent</span>
-                <p className="text-[28px] leading-9 md:text-[36px] md:leading-[44px]">Thanks. Alex will get back to you, usually within a day.</p>
+                <p className="text-[28px] leading-9 md:text-[36px] md:leading-[44px]">Thanks. Alex will get back to you, usually within a day. A confirmation is on its way to your inbox.</p>
             </div>
         );
     }

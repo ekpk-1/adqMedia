@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { renderMail } from "./mail";
+
+const SITE = "https://adqmedia.au";
 
 export const SERVICE_IDS = ["pre-sale", "social", "other"];
 
@@ -45,22 +48,67 @@ export function createRateLimiter({ limit, windowMs, now = Date.now }) {
     };
 }
 
-const escapeHtml = (value) =>
-    value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+const present = (line) => line !== null;
+const firstName = (name) => name.trim().split(/\s+/)[0];
 
 /** Plain-text and HTML bodies for the email Alex receives. */
 export function formatEnquiry({ name, email, message, project }, serviceLabel) {
+    const projectUrl = project ? `${SITE}/work/${project}` : null;
     const lines = [
         `Name: ${name}`,
         `Email: ${email}`,
         serviceLabel ? `Looking for: ${serviceLabel}` : null,
-        project ? `From project: https://adqmedia.au/work/${project}` : null,
+        projectUrl ? `From project: ${projectUrl}` : null,
         "",
         message,
-    ].filter((line) => line !== null);
+    ].filter(present);
     return {
         subject: `New enquiry from ${name}`,
         text: lines.join("\n"),
-        html: lines.map((line) => (line ? `<p>${escapeHtml(line)}</p>` : "<br>")).join(""),
+        html: renderMail({
+            preheader: serviceLabel ? `${name} asked about ${serviceLabel}.` : `${name} sent an enquiry.`,
+            eyebrow: "New enquiry",
+            title: name,
+            lines: ["Reply to this email and it goes straight to them."],
+            facts: [
+                { label: "Email", text: email, href: `mailto:${email}` },
+                serviceLabel ? { label: "Looking for", text: serviceLabel } : null,
+                projectUrl ? { label: "From project", text: "View the project", href: projectUrl } : null,
+            ].filter(present),
+            noteLabel: "About the car",
+            note: message,
+        }),
+    };
+}
+
+/** Confirmation sent back to the person who filled in the form. */
+export function formatConfirmation({ name, message }, serviceLabel) {
+    const who = firstName(name);
+    const lines = [
+        `Hi ${who},`,
+        "",
+        "Alex has your enquiry and will reply, usually within a day.",
+        serviceLabel ? `You asked about ${serviceLabel}.` : null,
+        "",
+        "You wrote:",
+        message,
+        "",
+        "Reply to this email if you want to add something.",
+    ].filter(present);
+    return {
+        subject: "Alex got your enquiry",
+        text: lines.join("\n"),
+        html: renderMail({
+            preheader: "Alex has your enquiry and will reply, usually within a day.",
+            eyebrow: "Enquiry received",
+            title: `Thanks, ${who}.`,
+            lines: [
+                "Alex has this and will reply, usually within a day.",
+                "Reply to this email if you want to add something.",
+            ],
+            facts: serviceLabel ? [{ label: "Looking for", text: serviceLabel }] : [],
+            noteLabel: "You wrote",
+            note: message,
+        }),
     };
 }

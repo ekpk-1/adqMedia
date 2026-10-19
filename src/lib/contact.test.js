@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createRateLimiter, formatEnquiry, parseEnquiry } from "./contact";
+import { createRateLimiter, formatConfirmation, formatEnquiry, parseEnquiry } from "./contact";
 
 const valid = { name: "Rush", email: "rush@example.com", message: "White M3, free on weekends." };
 
@@ -38,7 +38,21 @@ describe("formatEnquiry", () => {
     it("escapes HTML and includes the project link", () => {
         const mail = formatEnquiry({ ...valid, name: "<b>Rush</b>", project: "rushs-m3" }, "Pre-sale photos");
         expect(mail.html).not.toContain("<b>");
+        expect(mail.html).toContain("https://adqmedia.au/work/rushs-m3");
+        expect(mail.html).toContain("New enquiry");
         expect(mail.text).toContain("Looking for: Pre-sale photos");
         expect(mail.text).toContain("/work/rushs-m3");
+    });
+});
+
+describe("formatConfirmation", () => {
+    it("uses the first name and escapes the message", () => {
+        const mail = formatConfirmation({ name: "Rush Quach", message: "<b>White M3</b>" }, "Pre-sale photos");
+        expect(mail.subject).toBe("Alex got your enquiry");
+        expect(mail.text).toContain("Hi Rush,");
+        expect(mail.html).toContain("Thanks, Rush.");
+        expect(mail.html).toContain("Pre-sale photos");
+        expect(mail.html).not.toContain("<b>");
+        expect(mail.html).toContain("&lt;b&gt;White M3&lt;/b&gt;");
     });
 });
