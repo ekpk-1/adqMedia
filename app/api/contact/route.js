@@ -1,7 +1,9 @@
+import { checkRateLimit } from "@vercel/firewall";
 import { SERVICE_CHOICES } from "@/content/settings";
-import { createRateLimiter, formatConfirmation, formatEnquiry, parseEnquiry } from "@/lib/contact";
+import { createRateLimiter, enquiryIsLimited, formatConfirmation, formatEnquiry, parseEnquiry } from "@/lib/contact";
 
-const isLimited = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
+const memoryLimit = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
+const SHARED_LIMIT = "contact-enquiry";
 
 const reply = (status, body) => Response.json(body, { status });
 const FAILED = "Couldn't send that just now. Try again, or email Alex directly.";
@@ -19,8 +21,12 @@ async function sendEmail(apiKey, email) {
 }
 
 export async function POST(request) {
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
-    if (isLimited(ip)) {
+    const limited = await enquiryIsLimited(request, {
+        memory: memoryLimit,
+        production: process.env.NODE_ENV === "production",
+        check: (incoming) => checkRateLimit(SHARED_LIMIT, { request: incoming, timeout: 1500 }),
+    });
+    if (limited) {
         return reply(429, { ok: false, error: "That's a few enquiries in a row. Give it ten minutes, or email Alex directly." });
     }
 

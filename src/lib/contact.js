@@ -28,6 +28,27 @@ export function parseEnquiry(input) {
     return { error: issue.message, field };
 }
 
+const clientIp = (request) =>
+    request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+
+/**
+ * Uses the shared Vercel Firewall rule `contact-enquiry` in production.
+ * That rule is 5 requests per 10 minutes per IP, counted per region.
+ * Development, and a missing rule, fall back to the in-memory limiter.
+ */
+export async function enquiryIsLimited(request, { check, memory, production }) {
+    const ip = clientIp(request);
+    if (!production) return memory(ip);
+    try {
+        const result = await check(request);
+        if (!result || result.error === "not-found") return memory(ip);
+        return result.rateLimited;
+    } catch (error) {
+        console.error("[contact] Shared rate limit unavailable", error instanceof Error ? error.message : error);
+        return memory(ip);
+    }
+}
+
 /** Fixed-window limiter kept in memory, so it resets per server instance. */
 export function createRateLimiter({ limit, windowMs, now = Date.now }) {
     const hits = new Map();

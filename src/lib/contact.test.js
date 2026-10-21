@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createRateLimiter, formatConfirmation, formatEnquiry, parseEnquiry } from "./contact";
+import { createRateLimiter, enquiryIsLimited, formatConfirmation, formatEnquiry, parseEnquiry } from "./contact";
 
 const valid = { name: "Rush", email: "rush@example.com", message: "White M3, free on weekends." };
 
@@ -20,6 +20,34 @@ describe("parseEnquiry", () => {
     it("rejects unknown services and malformed project slugs", () => {
         expect(parseEnquiry({ ...valid, service: "wedding" }).field).toBe("service");
         expect(parseEnquiry({ ...valid, project: "../etc" }).field).toBe("project");
+    });
+});
+
+describe("enquiryIsLimited", () => {
+    const request = new Request("https://adqmedia.au/api/contact", { headers: { "x-real-ip": "203.0.113.8" } });
+
+    it("uses memory outside production and does not call the shared check", async () => {
+        let time = 0;
+        const memory = createRateLimiter({ limit: 1, windowMs: 1000, now: () => time });
+        const check = () => {
+            throw new Error("should not run");
+        };
+        expect(await enquiryIsLimited(request, { check, memory, production: false })).toBe(false);
+        expect(await enquiryIsLimited(request, { check, memory, production: false })).toBe(true);
+    });
+
+    it("trusts the shared limiter when the rule is configured", async () => {
+        const memory = () => {
+            throw new Error("should not run");
+        };
+        expect(await enquiryIsLimited(request, { check: async () => ({ rateLimited: false }), memory, production: true })).toBe(false);
+        expect(await enquiryIsLimited(request, { check: async () => ({ rateLimited: true }), memory, production: true })).toBe(true);
+    });
+
+    it("falls back to memory when the shared rule is missing or the check fails", async () => {
+        const memory = () => false;
+        expect(await enquiryIsLimited(request, { check: async () => ({ rateLimited: true, error: "not-found" }), memory, production: true })).toBe(false);
+        expect(await enquiryIsLimited(request, { check: async () => { throw new Error("down"); }, memory, production: true })).toBe(false);
     });
 });
 
